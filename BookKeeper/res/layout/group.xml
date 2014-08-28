@@ -1,0 +1,32 @@
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
+    android:clickable="true"
+    android:stretchColumns="*" 
+    android:shrinkColumns="0" 
+    android:orientation="vertical"
+    android:paddingLeft="40dp"
+    tools:context="com.bookies.bookkeeper.MainForm" >
+    <TableRow>
+     
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textIsSelectable="true"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <Button
+        	android:id="@+id/optionalChildButton"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	 android:textColor="#F5F5F0"/>
+    </TableRow>
+    
+
+</TableLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arrange_by_options">
+        <item>Title</item>
+        <item>Author</item>
+        <item>Rating</item>
+        <item>Status</item>
+    </string-array>
+    <string-array name="arrange_by_options_values">
+        <item>t</item>
+        <item>a</item>
+        <item>r</item>
+        <item>s</item>
+    </string-array>
+    <string-array name="filter_by_status">
+        <item>Read Only</item>
+        <item>Reading Only</item>
+        <item>Wishlist Only</item>
+        <item>View All</item>
+    </string-array>
+    <string-array name = "filter_by_status_values">
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="filter_by_rating">
+        <item>Unrated</item>
+        <item>1 star</item>
+        <item>2 stars</item>
+        <item>3 stars</item>
+        <item>4 stars</item>
+        <item>5 stars</item>
+        <item>No filter</item>
+    </string-array>
+    <string-array name="filter_by_rating_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3s</item>
+        <item>4</item>
+        <item>5</item>
+        <item>n</item>
+    </string-array>
+</resources>

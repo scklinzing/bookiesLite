@@ -1,0 +1,11 @@
+<!--  This xml file is for searching for a specific user as an Admin. -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- This displays the message "Search User" -->     <TextView        android:id="@+id/TextView1"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_alignParentTop="true"        android:layout_centerHorizontal="true"        android:layout_marginTop="15dp"        android:text="@string/search_user"        android:textAppearance="?android:attr/textAppearanceLarge" />
+		<!--  Search Field -->      <EditText        android:id="@+id/SearchUser"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_below="@+id/TextView1"        android:layout_centerHorizontal="true"        android:layout_marginTop="48dp"        android:ems="10"        android:gravity="center"        android:hint="User name or email" >    </EditText>          <!--  Go Button -->    <Button        android:id="@+id/GoSearchUser"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:layout_below="@+id/SearchUser"        android:layout_centerHorizontal="true"        android:layout_marginTop="35dp"        android:onClick="searchUser"        android:text="@string/search" />   
+</RelativeLayout>

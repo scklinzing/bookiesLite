@@ -1,0 +1,127 @@
+<!-- Displays application book information for editing  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+        
+    <TextView
+        android:id="@+id/ISBNLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/book_isbn" />
+
+    <EditText
+         android:id="@+id/UpdateISBN"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/ISBNLabel"
+         android:layout_toRightOf="@+id/ISBNLabel"
+         android:ems="10"
+         android:inputType="text" />
+    
+    <TextView
+        android:id="@+id/AuthorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ISBNLabel"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/book_author" />
+
+    <EditText
+        android:id="@+id/UpdateAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/AuthorLabel"
+        android:layout_toRightOf="@+id/AuthorLabel"
+        android:ems="10"
+        android:inputType="text" />
+        
+    <TextView
+        android:id="@+id/TitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AuthorLabel"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/book_title" />
+
+    <EditText
+        android:id="@+id/UpdateTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/TitleLabel"
+        android:layout_toRightOf="@+id/TitleLabel"
+        android:ems="10"
+        android:inputType="text" />
+    
+     <TextView
+        android:id="@+id/NumRatingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TitleLabel"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/book_num_ratings" />
+
+    <EditText
+        android:id="@+id/UpdateNumRatings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/NumRatingsLabel"
+        android:layout_toRightOf="@+id/NumRatingsLabel"
+        android:ems="10"
+        android:inputType="text" />
+    
+    <TextView
+        android:id="@+id/SumRatingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/NumRatingsLabel"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/book_sum_ratings" />
+
+    <EditText
+        android:id="@+id/UpdateSumRatings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/SumRatingsLabel"
+        android:layout_toRightOf="@+id/SumRatingsLabel"
+        android:ems="10"
+        android:inputType="text" />
+
+    <RadioGroup
+        android:id="@+id/ScannedRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SumRatingsLabel"
+        android:layout_marginLeft="10dp" >
+    </RadioGroup>
+    
+    <RadioGroup
+        android:id="@+id/StatusRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ScannedRadioGroup"
+        android:layout_marginLeft="10dp" >
+    </RadioGroup>
+    
+     <Button
+        android:id="@+id/SubmitChangesButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StatusRadioGroup"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="update"
+        android:text="@string/submit" />
+    
+
+    
+
+</RelativeLayout>

@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.bookies.bookkeeper.MainForm" >
+
+    
+
+
+
+    <item
+        android:id="@+id/viewMainList"
+        android:orderInCategory="102"
+        android:title="View App Library"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/viewMyList"
+        android:orderInCategory="101"
+        android:title="View My List"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/viewFriendList"
+        android:orderInCategory="103"
+        android:title="View Friend List"
+        android:showAsAction="never"/>
+    <item
+        android:id="@+id/sendRequest"
+        android:orderInCategory="96"
+        android:title="Send Friend Request"
+        android:showAsAction="never"/>
+    
+    <item 
+        android:id="@+id/change_pw"    
+ 		android:orderInCategory="199"
+        android:title="Change Password"
+        android:showAsAction="never"/>
+    
+    <item 
+        android:id="@+id/logOut"    
+ 		android:orderInCategory="200"
+        android:title="Logout"
+        android:showAsAction="never"/>
+    
+    
+</menu>

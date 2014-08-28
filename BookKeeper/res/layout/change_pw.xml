@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+        
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+	    <TextView
+	        android:id="@+id/ChangePassword"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="25dp"
+	        android:textStyle="bold"
+	        android:text="@string/change_password"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	        
+	    <EditText
+	        android:id="@+id/OldNewPasswordTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/ChangePassword"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="56dp"
+	        android:ems="10"
+	        android:hint="Old Password"
+	        android:gravity="center"
+	        android:inputType="textPassword" />
+	    
+	     <EditText
+	        android:id="@+id/NewPasswordTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/OldNewPasswordTextView"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="21dp"
+	        android:ems="10"
+	        android:hint="New Password"
+	        android:gravity="center"
+	        android:inputType="textPassword" />
+	
+	    <EditText
+	        android:id="@+id/ReenterPasswordTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/NewPasswordTextView"
+	        android:ems="10"
+	        android:gravity="center"
+	        android:layout_marginTop="21dp"
+	        android:hint="Re-enter Password"
+	        android:inputType="textPassword" />
+	    
+	     <Button
+	        android:id="@+id/signinButton"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/ReenterPasswordTextView"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="18dp"
+	        android:text="@string/submit"
+	        android:onClick="submit" />
+ 
+	</RelativeLayout>
+
+</ScrollView>
+
+<!-- ORIGINAL
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/ChangePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:textStyle="bold"
+        android:text="@string/change_password"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/ReenterPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/NewPasswordLabel"
+        android:layout_below="@+id/NewPasswordLabel"
+        android:layout_marginTop="28dp"
+        android:textStyle="bold"
+        android:text="@string/reenter_password" />
+
+    <TextView
+        android:id="@+id/NewPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/OldPasswordLabel"
+        android:layout_below="@+id/OldPasswordLabel"
+        android:layout_marginTop="28dp"
+        android:textStyle="bold"
+        android:text="@string/new_password" />
+
+    <EditText
+        android:id="@+id/OldNewPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/OldPasswordLabel"
+        android:layout_alignBottom="@+id/OldPasswordLabel"
+        android:layout_toRightOf="@+id/OldPasswordLabel"
+        android:hint="Old Password"
+        android:ems="10"
+        android:inputType="textPassword" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/NewPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/NewPasswordLabel"
+        android:layout_alignBottom="@+id/NewPasswordLabel"
+        android:layout_alignLeft="@+id/OldNewPasswordTextView"
+        android:hint="New Password"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/ReenterPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ReenterPasswordLabel"
+        android:layout_alignBottom="@+id/ReenterPasswordLabel"
+        android:layout_alignLeft="@+id/NewPasswordTextView"
+        android:hint="Re-enter New Password"
+        android:ems="10"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/signinButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ReenterPasswordTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/submit"
+        android:onClick="submit" />
+
+    <TextView
+        android:id="@+id/OldPasswordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ChangePassword"
+        android:layout_marginTop="44dp"
+        android:layout_toLeftOf="@+id/signinButton"
+        android:text="@string/old_password"
+        
+        android:textStyle="bold" />
+
+</RelativeLayout>
+-->

@@ -1,0 +1,248 @@
+<!-- Displays personal book information for editing  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="26dp"
+        android:text="@string/title_search" />
+
+    <EditText
+        android:id="@+id/updateTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Title"
+        android:layout_toRightOf="@+id/Title"
+        android:ems="10"
+        android:inputType="text"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/Author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="26dp"
+        android:text="@string/author_search" />
+
+    <EditText
+        android:id="@+id/updateAuthor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Author"
+        android:layout_toRightOf="@+id/Author"
+        android:ems="10"
+        android:inputType="text"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Author"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/book_status"
+        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+    <RadioGroup
+        android:id="@+id/StatusRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Status"
+        android:layout_marginLeft="10dp" 
+         android:orientation='horizontal' >
+
+        <RadioButton
+            android:id="@+id/radioRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/read"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+        <RadioButton
+            android:id="@+id/radioWantToRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wishlist"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+        <RadioButton
+            android:id="@+id/radioReading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reading"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/Rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SecutiryRadioGroup"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/rating" />
+
+    <RadioGroup
+        android:id="@+id/RatingRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Rating"
+        android:layout_marginLeft="10dp" 
+        android:orientation='horizontal' >
+
+        <RadioButton
+            android:id="@+id/radioOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/one"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+        
+         <RadioButton
+	        android:id="@+id/radioTwo"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/two"
+	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+        
+        <RadioButton
+	        android:id="@+id/radioThree"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/three"
+	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+	    <RadioButton
+	        android:id="@+id/radioFour"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/four"
+	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+	    <RadioButton
+	        android:id="@+id/radioFive"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/five"
+	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RatingRadioGroup"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/date" />
+
+     <EditText
+         android:id="@+id/editDate"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBaseline="@+id/Date"
+         android:layout_alignBottom="@+id/Date"
+         android:layout_toRightOf="@+id/Date"
+         android:ems="10"
+         android:hint="yyyy-mm-dd"
+         android:inputType="date" >
+
+     </EditText>
+
+     <TextView
+         android:id="@+id/Comments"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/Date"
+         android:layout_below="@+id/editDate"
+         android:layout_marginTop="17dp"
+         android:text="@string/comments"
+         android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+     <EditText
+         android:id="@+id/editComments"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignTop="@+id/Comments"
+         android:layout_toRightOf="@+id/Comments"
+         android:ems="10"
+         android:inputType="textMultiLine" />
+
+     
+       <RadioGroup
+           android:id="@+id/SecutiryRadioGroup"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@+id/Security"
+           android:layout_below="@+id/Security"
+           android:orientation="horizontal" >
+
+           <RadioButton
+               android:id="@+id/radioPublic"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/security_public"
+               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+           <RadioButton
+               android:id="@+id/radioFriends"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/security_friends_only"
+               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+           <RadioButton
+               android:id="@+id/radioPrivate"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/security_private"
+               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+       </RadioGroup>
+
+       <TextView
+           android:id="@+id/Security"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@+id/StatusRadioGroup"
+           android:layout_below="@+id/StatusRadioGroup"
+            android:layout_marginTop="20dp"
+           android:text="@string/book_security"
+           android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+        <Button
+            android:id="@+id/SubmitChangesButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/editComments"
+            android:layout_toRightOf="@+id/Title"
+            android:onClick="updateBook"
+            android:text="@string/submit" />
+
+        <Button
+            android:id="@+id/DeleteBookButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editComments"
+            android:layout_alignRight="@+id/SecutiryRadioGroup"
+            android:onClick="verifyDelete"
+            android:text="@string/delete_book" />
+
+</RelativeLayout>
+
+</ScrollView>

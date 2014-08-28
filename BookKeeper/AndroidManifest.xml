@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bookies.bookkeeper"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
+
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:maxSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/stack"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bookies.bookkeeper.Login"
+            android:theme="@style/AppThemeFullScreen"
+            android:label="@string/app_name"
+			android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+       
+        <activity
+            android:name="com.bookies.bookkeeper.Register"
+            android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.Recommendation"
+            android:label="Recommend a book" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.ForgotPw"
+            android:label="@string/title_activity_forgot_pw" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.ChangePw"
+            android:label="@string/title_activity_change_pw" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.NewPassword"
+            android:label="@string/title_activity_new_password" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.Verify"
+            android:label="@string/title_activity_verify" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.MainForm"
+            android:label="@string/title_activity_main_form" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.UserForm"
+            android:label="@string/title_activity_user_form" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.Prefs"
+            android:label="Prefs" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.AppBookSearch"
+            android:label="@string/title_activity_book_app_search" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.EditBook"
+            android:label="@string/title_activity_edit_book" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.SearchUser"
+            android:label="@string/search_user2" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.EditUser"
+            android:label="@string/edit_user2" >
+        </activity>
+        <activity
+            android:name="com.bookies.bookkeeper.BookScanner"
+            android:label="@string/title_activity_book_scanner" >
+        </activity>
+        <activity 
+            android:name="com.bookies.bookkeeper.EmbeddedBook" />
+   
+    	<activity
+    	    android:name="com.bookies.bookkeeper.EditPersonalBook" 
+        	android:label="@string/edit_per_book"> 
+        </activity>
+        
+    	<activity
+    	    android:name="com.bookies.bookkeeper.BookSummary"
+    	    android:label="@string/book_summary">
+    	</activity>
+    	
+    	<activity
+    	    android:name="com.bookies.bookkeeper.AddBook"
+    	    android:label="@string/add_book">
+    	</activity>
+    	
+    	<activity
+    	    android:name="com.bookies.bookkeeper.UserAgreement"
+    	    android:label="@string/user_agreement">
+    	</activity>
+    	
+    	<activity
+    	    android:name="com.bookies.bookkeeper.AddBookChoice"
+    	    android:label="@string/add_book">
+    	</activity>
+    	
+    	<activity
+    	    android:name="com.bookies.bookkeeper.ScanHelp"
+    	    android:label="@string/scan_help">
+    	</activity>
+    	
+    	<activity
+    	    android:name="com.bookies.bookkeeper.AddBookFromAppLib"
+    	    android:label="@string/title_activity_edit_book">
+    	</activity>
+        <activity
+    	    android:name="com.bookies.bookkeeper.FriendRequest"
+    	    android:label="Friend Request">
+    	</activity>
+ </application>
+</manifest>
