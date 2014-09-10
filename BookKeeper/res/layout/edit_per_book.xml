@@ -63,7 +63,6 @@
         android:layout_alignBottom="@+id/Author"
         android:layout_toRightOf="@+id/Author"
         android:ems="10"
-        android:focusable="false"
         android:inputType="text" />
 
     <TextView

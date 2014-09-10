@@ -120,7 +120,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 		// set text values
 		updateISBN.setText(ISBN);
-		// authorET.setText(author);
+		updateAuthor.setText(author);
 		// titleET.setText(title);
 
 		// ---UNCOMMENT when intent is up and working---
@@ -205,7 +205,14 @@ public class EditPersonalBook extends ActionBarActivity implements
 			if(!ISBN.equals(updateISBN.getText().toString())){
 				set += " ISBN= '" + updateISBN.getText().toString() + "', ";			
 			}
-			
+			// author
+			if(!author.equals(updateAuthor.getText().toString())){
+				set += " Author= '" + updateAuthor.getText().toString() + "', ";
+			}
+			// title
+			if(!title.equals(updateTitle.getText().toString())){
+				set += " Title= '" + updateTitle.getText().toString() + "', ";
+			}
 			// date
 			if (dateRead > 0) {
 				set += " dateRead= \"" + updateDate.getText().toString()
@@ -256,6 +263,14 @@ public class EditPersonalBook extends ActionBarActivity implements
 			// update ISBN
 			if (!ISBN.equals(updateISBN.getText().toString())) {
 				set += " ISBN= '" + updateISBN.getText().toString() + "', ";
+			}
+			// author
+			if(!author.equals(updateAuthor.getText().toString())){
+				set += " Author= '" + updateAuthor.getText().toString() + "', ";
+			}
+			// title
+			if(!title.equals(updateTitle.getText().toString())){
+				set += " Title= '" + updateTitle.getText().toString() + "', ";
 			}
 			// update date read
 			if (!dRead.equals(updateDate.getText().toString())) {
