@@ -9,12 +9,14 @@
         android:orderInCategory="99"
         android:title="@string/addBookMenuItem"
         android:showAsAction="never"/>
+        <!-- 
     <item
         android:id="@+id/viewFriendsList"
         android:orderInCategory="97"
         android:icon="@drawable/friends"
         android:title="@string/viewFriendsListMenuItem"
         android:showAsAction="always"/>
+        -->
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -36,11 +38,13 @@
         android:orderInCategory="101"
         android:title="View My List"
         android:showAsAction="never"/>
+    <!--
     <item
         android:id="@+id/viewUserList"
         android:orderInCategory="95"
         android:title="View User List"
         android:showAsAction="never"/>
+    -->
     <item 
         android:id="@+id/editUser"    
  		android:orderInCategory="102"
