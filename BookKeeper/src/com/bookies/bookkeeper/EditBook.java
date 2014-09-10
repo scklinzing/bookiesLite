@@ -33,20 +33,12 @@ public class EditBook extends AppBookSearch  implements QueryCallback  {
 	//used to store data entered in form
 	private String ISBN ="";
 	private String author;
-	private String title;	
-	private String numRatings;
-	private String sumRatings;
+	private String title;
 	
 	//fields that can be updated
 	private EditText ISBNET;
 	private EditText authorET;
 	private EditText titleET;
-	private EditText numRatingsET;
-	private EditText sumRatingsET;
-	private RadioButton scannedRadio;
-	private RadioButton notScannedRadio;
-	private RadioButton activeRadio;
-	private RadioButton notActiveRadio;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,23 +49,16 @@ public class EditBook extends AppBookSearch  implements QueryCallback  {
 		ISBN = b.getString(EXTRA_ISBN);
 		author = b.getString(EXTRA_AUTHOR);
 		title = b.getString(EXTRA_TITLE);
-		numRatings = b.getString(EXTRA_NUMOFRATINGS);
-		sumRatings = b.getString(EXTRA_SUMOFRATINGS); 
 				
 		//save fields to set values
 		ISBNET = (EditText) findViewById(R.id.UpdateISBN);
 		authorET = (EditText) findViewById(R.id.UpdateAuthor);
 		titleET = (EditText) findViewById(R.id.UpdateTitle);
-		numRatingsET = (EditText) findViewById(R.id.UpdateNumRatings);
-		sumRatingsET = (EditText) findViewById(R.id.UpdateSumRatings);
 	
 		//set text values
 		ISBNET.setText(ISBN);
 		authorET.setText(author);
 		titleET.setText(title);
-		numRatingsET.setText(numRatings);
-		sumRatingsET.setText(sumRatings);
-		
 		
 	}
 	
@@ -95,14 +80,6 @@ public class EditBook extends AppBookSearch  implements QueryCallback  {
 		if(!title.equals(titleET.getText().toString())){
 			set += " Title= '" + titleET.getText().toString() + "', ";
 		}
-		
-		if(!numRatings.equals(numRatingsET.getText().toString())){
-			set += " numOfRatings= '" + numRatingsET.getText().toString() + "', ";
-		}
-		if(!sumRatings.equals(sumRatingsET.getText().toString())){
-			set += " sumOfRatings= '" + sumRatingsET.getText().toString() + "', ";
-		}	
-	
 		
 		/* chop the last comma & space off of set */
 		set = set.substring(0, set.length()-2);

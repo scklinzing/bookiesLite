@@ -9,7 +9,7 @@
         android:orderInCategory="99"
         android:title="@string/addBookMenuItem"
         android:showAsAction="never"/>
-        <!-- 
+        <!-- Removing Friends List
     <item
         android:id="@+id/viewFriendsList"
         android:orderInCategory="97"
@@ -38,7 +38,7 @@
         android:orderInCategory="101"
         android:title="View My List"
         android:showAsAction="never"/>
-    <!--
+    <!-- Remove View User List
     <item
         android:id="@+id/viewUserList"
         android:orderInCategory="95"

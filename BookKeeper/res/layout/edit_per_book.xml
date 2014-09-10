@@ -7,16 +7,35 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
-
+    
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/ISBNLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/book_isbn" />
+
+    <EditText
+         android:id="@+id/updateISBN"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignBottom="@+id/ISBNLabel"
+         android:layout_toRightOf="@+id/ISBNLabel"
+         android:ems="10"
+         android:inputType="text" />
+
+    <!-- ____________________________TITLE___________________________________ -->
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ISBNLabel"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="26dp"
-        android:text="@string/title_search" />
+        android:text="@string/book_title" />
 
     <EditText
         android:id="@+id/updateTitle"
@@ -25,8 +44,8 @@
         android:layout_alignBottom="@+id/Title"
         android:layout_toRightOf="@+id/Title"
         android:ems="10"
-        android:inputType="text"
-        android:focusable="false" />
+        android:inputType="text" />
+    <!-- ____________________________TITLE___________________________________ -->
 
     <TextView
         android:id="@+id/Author"
@@ -44,8 +63,8 @@
         android:layout_alignBottom="@+id/Author"
         android:layout_toRightOf="@+id/Author"
         android:ems="10"
-        android:inputType="text"
-        android:focusable="false" />
+        android:focusable="false"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/Status"
@@ -62,8 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Status"
-        android:layout_marginLeft="10dp" 
-         android:orientation='horizontal' >
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radioRead"
@@ -91,7 +110,7 @@
         android:id="@+id/Rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/SecutiryRadioGroup"
+        android:layout_below="@+id/StatusRadioGroup"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:text="@string/rating" />
@@ -101,8 +120,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Rating"
-        android:layout_marginLeft="10dp" 
-        android:orientation='horizontal' >
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radioOne"
@@ -110,34 +129,34 @@
             android:layout_height="wrap_content"
             android:text="@string/one"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-        
-         <RadioButton
-	        android:id="@+id/radioTwo"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/two"
-	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-        
+
         <RadioButton
-	        android:id="@+id/radioThree"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/three"
-	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+            android:id="@+id/radioTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/two"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
 
-	    <RadioButton
-	        android:id="@+id/radioFour"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/four"
-	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+        <RadioButton
+            android:id="@+id/radioThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/three"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
 
-	    <RadioButton
-	        android:id="@+id/radioFive"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/five"
-	        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+        <RadioButton
+            android:id="@+id/radioFour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/four"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+        <RadioButton
+            android:id="@+id/radioFive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/five"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
     </RadioGroup>
 
     <TextView
@@ -149,99 +168,58 @@
         android:layout_marginTop="20dp"
         android:text="@string/date" />
 
-     <EditText
-         android:id="@+id/editDate"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBaseline="@+id/Date"
-         android:layout_alignBottom="@+id/Date"
-         android:layout_toRightOf="@+id/Date"
-         android:ems="10"
-         android:hint="yyyy-mm-dd"
-         android:inputType="date" >
+    <EditText
+        android:id="@+id/editDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Date"
+        android:layout_alignBottom="@+id/Date"
+        android:layout_toRightOf="@+id/Date"
+        android:ems="10"
+        android:hint="yyyy-mm-dd"
+        android:inputType="date" >
+    </EditText>
 
-     </EditText>
+    <TextView
+        android:id="@+id/Comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Date"
+        android:layout_below="@+id/editDate"
+        android:layout_marginTop="17dp"
+        android:text="@string/comments"
+        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
 
-     <TextView
-         android:id="@+id/Comments"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/Date"
-         android:layout_below="@+id/editDate"
-         android:layout_marginTop="17dp"
-         android:text="@string/comments"
-         android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+    <EditText
+        android:id="@+id/editComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Comments"
+        android:layout_toRightOf="@+id/Comments"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="textMultiLine" />
 
-     <EditText
-         android:id="@+id/editComments"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignTop="@+id/Comments"
-         android:layout_toRightOf="@+id/Comments"
-         android:ems="10"
-         android:inputType="textMultiLine" />
+    <Button
+        android:id="@+id/SubmitChangesButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/editComments"
+        android:layout_toRightOf="@+id/Title"
+        android:onClick="updateBook"
+        android:text="@string/submit" />
 
-     
-       <RadioGroup
-           android:id="@+id/SecutiryRadioGroup"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignLeft="@+id/Security"
-           android:layout_below="@+id/Security"
-           android:orientation="horizontal" >
-
-           <RadioButton
-               android:id="@+id/radioPublic"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_public"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-           <RadioButton
-               android:id="@+id/radioFriends"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_friends_only"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-           <RadioButton
-               android:id="@+id/radioPrivate"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_private"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-       </RadioGroup>
-
-       <TextView
-           android:id="@+id/Security"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignLeft="@+id/StatusRadioGroup"
-           android:layout_below="@+id/StatusRadioGroup"
-            android:layout_marginTop="20dp"
-           android:text="@string/book_security"
-           android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-        <Button
-            android:id="@+id/SubmitChangesButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/editComments"
-            android:layout_toRightOf="@+id/Title"
-            android:onClick="updateBook"
-            android:text="@string/submit" />
-
-        <Button
-            android:id="@+id/DeleteBookButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editComments"
-            android:layout_alignRight="@+id/SecutiryRadioGroup"
-            android:onClick="verifyDelete"
-            android:text="@string/delete_book" />
+    <Button
+        android:id="@+id/DeleteBookButton"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/StatusRadioGroup"
+        android:onClick="verifyDelete"
+        android:text="@string/delete_book" />
 
 </RelativeLayout>
 
