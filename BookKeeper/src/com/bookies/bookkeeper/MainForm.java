@@ -507,6 +507,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			ExpandableParent parent;
 			child = new ArrayList<ExpandableChild>();
 			child.add(new ExpandableChild(listing.get(i).getBookID() + "" , false));
+			/* display the rating */
 			if(listing.get(i).getRating() == -1){
 				child.add(new ExpandableChild("Rating: Not yet rated", false));
 			}else{
@@ -559,22 +560,19 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 					case 2:
 						child.add(new ExpandableChild("Status: Wishlist", false));
 						icon = "wishlist";
-						child.add(new ExpandableChild("Edit Review", true));
-						child.add(new ExpandableChild("Recommend to Friend", true));
+						child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					case 1:
 						child.add(new ExpandableChild("Status: Read", false));
 						icon = "bookread";
-						child.add(new ExpandableChild("Edit Review", true));
-						child.add(new ExpandableChild("Recommend to Friend", true));
+						child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					case 3:
 						child.add(new ExpandableChild("Status: Reading", false));
 						icon = "bookreading";
-						child.add(new ExpandableChild("Edit Review", true));
-						child.add(new ExpandableChild("Recommend to Friend", true));
+						child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					default:
@@ -602,22 +600,22 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 				switch(listing.get(i).getMyStatus()){
 					case 2:
 						child.add(new ExpandableChild("Your Status: Wishlist", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Review", true));
+						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					case 1:
 						child.add(new ExpandableChild("Your Status: Read", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Review", true));
+						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					case 3:
 						child.add(new ExpandableChild("Your Status: Reading", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Review", true));
+						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 						break;
 					default:
 						child.add(new ExpandableChild("Add to my list", true));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Review", true));
+						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
 						child.add(new ExpandableChild("View Summary", true));
 				}
 			}
@@ -636,6 +634,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			parentItems.add(parent);
 		}//end for
 		if(viewingList == 0){
+			/*
 			if(!recList.isEmpty()){
 				parentItems.add(new ExpandableParent("Recommendations", "Your friends think you might like", "ic_rec"));
 				ExpandableParent parent;
@@ -653,6 +652,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 					parentItems.add(parent);
 				}
 			}
+			*/
 		}
 		if(parentItems.isEmpty()){
 			parentItems.add(new ExpandableParent("You have no books!!","Use the menu to add some.","booklist"));
@@ -748,10 +748,8 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	 */
 	@SuppressLint("NewApi")
 	public static class PlaceholderFragment extends Fragment {
-
 		public PlaceholderFragment() {
 		}
-
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -760,5 +758,4 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			return rootView;
 		}
 	}
-		
 }
