@@ -107,14 +107,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		 	case 0:
 		 		getWebBookList();
 		 		break;
-		 	case 2:
-		 		//Viewing friend's booklist
-		 		int friend = intent.getIntExtra("FRIEND_ID", -1);
-		 		if(friend != -1){
-		 			friendID = friend;
-		 		}
-		 		setFriendBookList();
-		 		break;
 		 	case 1:
 		 		getMainBookList(); //replaced get main list
 		 		break;
@@ -122,7 +114,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		 		//-1 etc
 		 		getWebBookList();
 		 }
-		 
 		 prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 mPreferenceListener = new PreferenceChangeListener();
 		 prefs.registerOnSharedPreferenceChangeListener(mPreferenceListener);
@@ -143,11 +134,8 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		 expandableList.setGroupIndicator(null);
 		 expandableList.setClickable(true);
 		 
-		 
 		 setData();
 		 setTitle();
-		 //set title
-		 
 		
 		 MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, findViewById(R.id.progressBar));
 		 
@@ -163,29 +151,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	 	case 1:
 	 		setTitle("App Book List");
 	 		break;
-	 	case 2:
-	 		User friend = null;
-	 		if(UserForm.getFriends() != null){
-	 			friend= UserForm.getFriends().getID(friendID);
-	 		}
-	 		if(friend != null){
-	 			setTitle(friend.getUserName());
-	 		}else{
-	 			if(UserForm.getUserList() == null){
-	 				Log.e("SetTitleMainForm","ERROR, how did we get here?");
-	 				setTitle("Unknown Error");
-	 				break;
-	 			}
-	 			friend= UserForm.getUserList().getID(friendID);
-	 			if(friend != null){
-	 				setTitle(friend.getUserName() + "'s list");
-	 			}else{
-	 				setTitle("Unknown friend's list");
-	 			}
-	 		}
-	 		
-	 		break;
-	 }
+		}
 	}
 	public void getWebBookList(){
 		bookList = null;
@@ -197,22 +163,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_SELECT_TEST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
 		
 		
-	}
-	public void setFriendBookList(){
-		//this method pulls the friends book list from the web.
-		String query;
-		if(Variables.getAdmin()){
-			//if they are admin, get all books, otherwise, get just public and friend books
-			query = "select USER_LIB.*, BOOK.*"+
-					"from USER_LIB join BOOK on USER_LIB.ISBN = BOOK.ISBN "+
-					"where USER_LIB.userID = " + friendID ;
-		}else{
-			query = "select USER_LIB.*, BOOK.*"+
-					"from USER_LIB join BOOK on USER_LIB.ISBN = BOOK.ISBN "+
-					"where (USER_LIB.userID = " + friendID + " and USER_LIB.bookSecurity < 2 )";
-		}
-		Log.d("Mainform", "Friend List Query = " + query);
-		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_FRIEND_LIST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
 	}
 	public void getMainBookList(){
 		mainBookList = null;
@@ -507,7 +457,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			ExpandableParent parent;
 			child = new ArrayList<ExpandableChild>();
 			child.add(new ExpandableChild(listing.get(i).getBookID() + "" , false));
-			/* display the rating */
 			if(listing.get(i).getRating() == -1){
 				child.add(new ExpandableChild("Rating: Not yet rated", false));
 			}else{
@@ -527,16 +476,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 					child.add(new ExpandableChild("Read Date: Not Set", false));
 				}
   				
-				switch(listing.get(i).getBookSecurity()){
-					case 0:
-						child.add(new ExpandableChild("Security: Public", false));
-						break;
-					case 1:
-						child.add(new ExpandableChild("Security: Friends Only", false));
-						break;
-					default:
-							child.add(new ExpandableChild("Security: Only You", false));
-				}
 				child.add(new ExpandableChild("Your comments: "+ listing.get(i).getUserComment(), false));
 			}
 			if(viewingList == 2){
@@ -634,7 +573,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			parentItems.add(parent);
 		}//end for
 		if(viewingList == 0){
-			/*
 			if(!recList.isEmpty()){
 				parentItems.add(new ExpandableParent("Recommendations", "Your friends think you might like", "ic_rec"));
 				ExpandableParent parent;
@@ -652,7 +590,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 					parentItems.add(parent);
 				}
 			}
-			*/
 		}
 		if(parentItems.isEmpty()){
 			parentItems.add(new ExpandableParent("You have no books!!","Use the menu to add some.","booklist"));
@@ -748,8 +685,10 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	 */
 	@SuppressLint("NewApi")
 	public static class PlaceholderFragment extends Fragment {
+
 		public PlaceholderFragment() {
 		}
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -758,4 +697,5 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			return rootView;
 		}
 	}
+		
 }

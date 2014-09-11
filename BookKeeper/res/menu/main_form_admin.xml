@@ -28,11 +28,11 @@
         android:orderInCategory="101"
         android:title="View App Library"
         android:showAsAction="never"/>
-    <item 
+    <!-- <item 
         android:id="@+id/change_pw"    
  		android:orderInCategory="199"
         android:title="Change Password"
-        android:showAsAction="never"/>
+        android:showAsAction="never"/> -->
     <item
         android:id="@+id/viewMyList"
         android:orderInCategory="101"
