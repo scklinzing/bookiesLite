@@ -214,11 +214,4 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 			e.printStackTrace();
 		}		
 	}
-	
-	//public void scan( View view )
-	//{
-	//	Intent intent = new Intent( this, BookScanner.class);
-	//	startActivity(intent);
-	//}
-	
 }

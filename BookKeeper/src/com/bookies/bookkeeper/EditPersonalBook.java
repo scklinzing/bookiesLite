@@ -2,10 +2,13 @@ package com.bookies.bookkeeper;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.madmarcos.resttest.QueryCallback;
 import com.madmarcos.resttest.QueryTask;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -189,18 +192,23 @@ public class EditPersonalBook extends ActionBarActivity implements
 	public void updateBook(View view) {
 		/* create a string to save the set part of the query */
 		String set = "set ";
+		String setBook = "set ";
 
 		// if this is a newly added book, you do not need to compare
 		// against old data
 		if (from != null && from.equals("1")) {
-			// author
+			/* --------------------- This is for BOOK --------------------- */
+			if(!ISBN.equals(updateISBN.getText().toString())){
+				setBook += " ISBN= '" + updateISBN.getText().toString() + "', ";			
+			}
 			if(!author.equals(updateAuthor.getText().toString())){
-				set += " Author= '" + updateAuthor.getText().toString() + "', ";
+				setBook += " Author= '" + updateAuthor.getText().toString() + "', ";
 			}
-			// title
 			if(!title.equals(updateTitle.getText().toString())){
-				set += " Title= '" + updateTitle.getText().toString() + "', ";
+				setBook += " Title= '" + updateTitle.getText().toString() + "', ";
 			}
+			
+			/* --------------------- This is for USER_LIB  ---------------------*/
 			// date
 			if (dateRead > 0) {
 				set += " dateRead= \"" + updateDate.getText().toString() + "\", ";
@@ -209,7 +217,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 			if (comments != null) {
 				set += " Comments= \"" + updateComments.getText().toString()
 						+ "\", ";
-
 				Log.d(TAG, "SET: " + set);
 			}
 			// status
@@ -224,7 +231,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 				nStatus = 3;
 				set += " Status= \"" + nStatus + "\", ";
 			}
-
 			// rating
 			if (radioOne.isChecked()) {
 				nRating = 1;
@@ -244,16 +250,19 @@ public class EditPersonalBook extends ActionBarActivity implements
 			}
 			rating = 0;
 		} else {
-			// check to see if new data matches old data, if not, start setting
-			// up
-			// author
+			// check if new data matches old data, if not, start setting up
+			/* --------------------- This is for BOOK --------------------- */
+			if(!ISBN.equals(updateISBN.getText().toString())){
+				setBook += " ISBN= '" + updateISBN.getText().toString() + "', ";			
+			}
 			if(!author.equals(updateAuthor.getText().toString())){
-				set += " Author= '" + updateAuthor.getText().toString() + "', ";
+				setBook += " Author= '" + updateAuthor.getText().toString() + "', ";
 			}
-			// title
 			if(!title.equals(updateTitle.getText().toString())){
-				set += " Title= '" + updateTitle.getText().toString() + "', ";
+				setBook += " Title= '" + updateTitle.getText().toString() + "', ";
 			}
+
+			/* --------------------- This is for USER_LIB  ---------------------*/
 			// update date read
 			if (!dRead.equals(updateDate.getText().toString())) {
 				set += " dateRead= \"" + updateDate.getText().toString()
@@ -264,7 +273,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 				set += " Comments= \"" + updateComments.getText().toString()
 						+ "\", ";
 			}
-
 			// check status radios and update if needed
 			int nStatus = 0;
 			if (radioRead.isChecked()) {
@@ -277,7 +285,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 			if (!(status == nStatus)) {
 				set += " Status= \"" + nStatus + "\", ";
 			}
-
 			// check rating radios and update if needed
 			if (radioOne.isChecked()) {
 				nRating = 1;
@@ -298,18 +305,26 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 		/* chop the last comma & space off of set */
 		set = set.substring(0, set.length() - 2);
+		setBook = setBook.substring(0, setBook.length() - 2);
 
+		/* update USER_LIB in the database */
 		query = "update USER_LIB " + set + " where ISBN= \"" + ISBN
 				+ "\" and userID= \"" + userId + "\"";
-		Log.d(TAG, "Query= " + query);
+		Log.d(TAG, "Query= " + query); // logging for debugging
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(),
 				Variables.getSalt(), query, UPDATE_USER_LIB, this,
+				Variables.getRest(), null).execute();
+		
+		/* update BOOK in database */
+		query = "update BOOK " + setBook + " where ISBN= \"" + ISBN + "\"";
+		Log.d(TAG, "Query: " + query); // logging for debugging
+		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(),
+				Variables.getSalt(), query, UPDATE_BOOK, this,
 				Variables.getRest(), null).execute();
 
 	}
 
-	// if user wants to delete the book, confirm that this is what they really
-	// want to do
+	// to delete the book, confirm this is what user wants to do
 	public void verifyDelete(View view) {
 		AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
 		builder2.setMessage("Are you sure you want to Delete this book from your library?");

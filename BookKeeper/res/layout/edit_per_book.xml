@@ -8,6 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
     
+    <!-- android:focusable="false" -->
+    
     <!-- ____________________________ISBN___________________________________ -->
     <TextView
         android:id="@+id/ISBNLabel"
@@ -84,21 +86,18 @@
         android:layout_below="@+id/Status"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal" >
-
         <RadioButton
             android:id="@+id/radioRead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/read"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioWantToRead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/wishlist"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioReading"
             android:layout_width="wrap_content"
@@ -116,7 +115,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:text="@string/rating" />
-
     <RadioGroup
         android:id="@+id/RatingRadioGroup"
         android:layout_width="wrap_content"
@@ -124,35 +122,30 @@
         android:layout_below="@+id/Rating"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal" >
-
         <RadioButton
             android:id="@+id/radioOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/one"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/two"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/three"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioFour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/four"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
         <RadioButton
             android:id="@+id/radioFive"
             android:layout_width="wrap_content"
@@ -203,8 +196,6 @@
         android:ems="10"
         android:inputType="textMultiLine" />
     
-    <!-- android:focusable="false" -->
-
 	<!-- ____________________________Submit Button___________________________________ -->
     <Button
         android:id="@+id/SubmitChangesButton"

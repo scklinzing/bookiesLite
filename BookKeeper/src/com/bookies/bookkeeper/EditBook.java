@@ -69,8 +69,7 @@ public class EditBook extends AppBookSearch  implements QueryCallback  {
 		/* create a string to save the set part of the query */
 		String set = "SET";
 		
-		//check to see if new data matches old data, if not, start setting up 
-		//query
+		//check if new data matches old data, if not, start setting up query
 		if(!ISBN.equals(ISBNET.getText().toString())){
 			set += " ISBN= '" + ISBNET.getText().toString() + "', ";			
 		}
