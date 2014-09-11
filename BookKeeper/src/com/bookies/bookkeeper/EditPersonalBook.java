@@ -2,13 +2,11 @@ package com.bookies.bookkeeper;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.madmarcos.resttest.QueryCallback;
 import com.madmarcos.resttest.QueryTask;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,7 +36,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 	// of them
 	private static final int UPDATE_USER_LIB = 0;
 	private static final int QUERY_BOOK = 1;
-	private static final int UPDATE_BOOK = 2;
+	private static final int UPDATE_BOOK = 2; // deleted - this was for sumOfRatings
 	private static final int DELETE_BOOK = 3;
 
 	// for log identification
@@ -46,8 +44,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 	// queries for update
 	private String query;
-	private String query2;
-	private String query3;
 
 	// used to store data in form
 	private String ISBN;
@@ -60,8 +56,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 	private long dateRead;
 	private String dRead;
 	private String comments;
-	private int sumOfRatings;
-	private int numOfRatings;
 	private String from;
 	private int userId = -1;
 	private int viewing = 2;
@@ -84,7 +78,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 	private RadioButton radioFour;
 	private RadioButton radioFive;
 
-	protected void onCreate(Bundle savedInstanceState) {
+	@SuppressLint("SimpleDateFormat") protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_per_book);
 
@@ -118,10 +112,10 @@ public class EditPersonalBook extends ActionBarActivity implements
 		dateRead = intent.getLongExtra(MyExpandableAdapter.EXTRA_DATE, -1);
 		comments = intent.getStringExtra(MyExpandableAdapter.EXTRA_COMMENT);
 
-		// set text values
+		// set text values for ISBN, Title, and Author
 		updateISBN.setText(ISBN);
 		updateAuthor.setText(author);
-		// titleET.setText(title);
+		updateTitle.setText(title);
 
 		// ---UNCOMMENT when intent is up and working---
 		userId = intent.getIntExtra(MyExpandableAdapter.EXTRA_USERID, -1);
@@ -190,8 +184,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 			radioFour.setChecked(false);
 			radioFive.setChecked(true);
 		}
-		updateAuthor.setText(author);
-		updateTitle.setText(title);
 	}
 
 	public void updateBook(View view) {
@@ -201,10 +193,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 		// if this is a newly added book, you do not need to compare
 		// against old data
 		if (from != null && from.equals("1")) {
-			// ISBN 
-			if(!ISBN.equals(updateISBN.getText().toString())){
-				set += " ISBN= '" + updateISBN.getText().toString() + "', ";			
-			}
 			// author
 			if(!author.equals(updateAuthor.getText().toString())){
 				set += " Author= '" + updateAuthor.getText().toString() + "', ";
@@ -215,8 +203,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 			}
 			// date
 			if (dateRead > 0) {
-				set += " dateRead= \"" + updateDate.getText().toString()
-						+ "\", ";
+				set += " dateRead= \"" + updateDate.getText().toString() + "\", ";
 			}
 			// comments
 			if (comments != null) {
@@ -255,15 +242,10 @@ public class EditPersonalBook extends ActionBarActivity implements
 				nRating = 5;
 				set += " Rating= \"" + nRating + "\", ";
 			}
-
 			rating = 0;
 		} else {
 			// check to see if new data matches old data, if not, start setting
 			// up
-			// update ISBN
-			if (!ISBN.equals(updateISBN.getText().toString())) {
-				set += " ISBN= '" + updateISBN.getText().toString() + "', ";
-			}
 			// author
 			if(!author.equals(updateAuthor.getText().toString())){
 				set += " Author= '" + updateAuthor.getText().toString() + "', ";
@@ -459,42 +441,6 @@ public class EditPersonalBook extends ActionBarActivity implements
 					}
 					// log rows
 					Log.d(TAG, "Rows= " + row);
-
-					// there should only be one result - this is true if a book
-					// is returned
-					if (row == 1) {
-						JSONObject object = new JSONObject(
-								result.getString(Integer.toString(0)));
-						// pull from JSON object
-						String sum = object.getString("sumOfRatings");
-						String num = object.getString("numOfRatings");
-						sumOfRatings = Integer.parseInt(sum);
-						numOfRatings = Integer.parseInt(num);
-
-						// update sumOfRatings
-						int nSum = sumOfRatings - (rating - nRating);
-						query2 = "update BOOK set sumOfRatings=\"" + nSum
-								+ "\" where ISBN= \"" + ISBN + "\"";
-						// update book table with new rating.
-						new QueryTask(Variables.getWS_URL(),
-								Variables.getSessionId(), Variables.getSalt(),
-								query2, UPDATE_BOOK, this, Variables.getRest(),
-								null).execute();
-
-						// if original rating was 0, update numOfRatings by 1
-						if (rating == 0) {
-							numOfRatings++;
-
-							query3 = "update BOOK set numOfRatings=\""
-									+ numOfRatings + "\" where ISBN= \"" + ISBN
-									+ "\"";
-							// update book table with new rating.
-							new QueryTask(Variables.getWS_URL(),
-									Variables.getSessionId(),
-									Variables.getSalt(), query3, UPDATE_BOOK,
-									this, Variables.getRest(), null).execute();
-						}
-					}
 				}
 			} else {
 				Log.e(TAG, "*** Error: unknown code");
@@ -503,5 +449,4 @@ public class EditPersonalBook extends ActionBarActivity implements
 			e.printStackTrace();
 		}
 	}
-
 }

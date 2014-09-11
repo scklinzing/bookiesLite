@@ -61,58 +61,6 @@
     
     <!-- ____________________________TITLE___________________________________ -->
     
-     <TextView
-        android:id="@+id/NumRatingsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/TitleLabel"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/book_num_ratings" />
-
-    <EditText
-        android:id="@+id/UpdateNumRatings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/NumRatingsLabel"
-        android:layout_toRightOf="@+id/NumRatingsLabel"
-        android:ems="10"
-        android:inputType="text" />
-    
-    <TextView
-        android:id="@+id/SumRatingsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/NumRatingsLabel"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text="@string/book_sum_ratings" />
-
-    <EditText
-        android:id="@+id/UpdateSumRatings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/SumRatingsLabel"
-        android:layout_toRightOf="@+id/SumRatingsLabel"
-        android:ems="10"
-        android:inputType="text" />
-
-    <RadioGroup
-        android:id="@+id/ScannedRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/SumRatingsLabel"
-        android:layout_marginLeft="10dp" >
-    </RadioGroup>
-    
-    <RadioGroup
-        android:id="@+id/StatusRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ScannedRadioGroup"
-        android:layout_marginLeft="10dp" >
-    </RadioGroup>
-    
      <Button
         android:id="@+id/SubmitChangesButton"
         style="?android:attr/buttonStyleSmall"

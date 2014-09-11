@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
     
+    <!-- ____________________________ISBN___________________________________ -->
     <TextView
         android:id="@+id/ISBNLabel"
         android:layout_width="wrap_content"
@@ -45,8 +46,8 @@
         android:layout_toRightOf="@+id/Title"
         android:ems="10"
         android:inputType="text" />
-    <!-- ____________________________TITLE___________________________________ -->
-
+    
+    <!-- ____________________________Author___________________________________ -->
     <TextView
         android:id="@+id/Author"
         android:layout_width="wrap_content"
@@ -65,6 +66,7 @@
         android:ems="10"
         android:inputType="text" />
 
+    <!-- ____________________________Status___________________________________ -->
     <TextView
         android:id="@+id/Status"
         android:layout_width="wrap_content"
@@ -105,6 +107,7 @@
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
     </RadioGroup>
 
+    <!-- ____________________________Rating___________________________________ -->
     <TextView
         android:id="@+id/Rating"
         android:layout_width="wrap_content"
@@ -158,6 +161,7 @@
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
     </RadioGroup>
 
+    <!-- ____________________________Date___________________________________ -->
     <TextView
         android:id="@+id/Date"
         android:layout_width="wrap_content"
@@ -179,6 +183,7 @@
         android:inputType="date" >
     </EditText>
 
+    <!-- ____________________________Comments___________________________________ -->
     <TextView
         android:id="@+id/Comments"
         android:layout_width="wrap_content"
@@ -196,9 +201,11 @@
         android:layout_alignTop="@+id/Comments"
         android:layout_toRightOf="@+id/Comments"
         android:ems="10"
-        android:focusable="false"
         android:inputType="textMultiLine" />
+    
+    <!-- android:focusable="false" -->
 
+	<!-- ____________________________Submit Button___________________________________ -->
     <Button
         android:id="@+id/SubmitChangesButton"
         style="?android:attr/buttonStyleSmall"
@@ -210,6 +217,7 @@
         android:onClick="updateBook"
         android:text="@string/submit" />
 
+    <!-- ____________________________Delete Button___________________________________ -->
     <Button
         android:id="@+id/DeleteBookButton"
         style="?android:attr/buttonStyleSmall"

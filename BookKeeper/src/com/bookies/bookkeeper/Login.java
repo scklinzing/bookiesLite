@@ -68,10 +68,6 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 
-//		if (savedInstanceState == null) {
-//			getSupportFragmentManager().beginTransaction()
-//					.add(R.id.container, new PlaceholderFragment()).commit();
-//		}
 		userNameTextView = (TextView) findViewById(R.id.UserNameTextView);
 		passwordTextView = (TextView) findViewById(R.id.PasswordTextView);
 		
@@ -90,9 +86,7 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
-
 		return true;
 	}
 	
@@ -151,10 +145,8 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-
 		public PlaceholderFragment() {
 		}
-
 	}
 
 	@Override
@@ -172,32 +164,22 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 					
 					//row will always be 1 since we have unique users and we ar using a slect with a where clause
 					if( row == 1 ) {
-						//check password here!!!
+						/* ------------- SKIP PASSWORD CHECK --------------------- */
 						JSONObject o2 = new JSONObject(result.getString(Integer.toString(0)));
-						//Checking password is being encrypted correctly.
-						//Log.d( TAG, "PW From DB: " + o2.getString("Password") );
-						//Log.d( TAG, "PW from form: " + passwordTextView.getText().toString());
-						//Log.d( TAG, "Encrypted form PW: " + CryptoStuff.hashPWSha256(passwordTextView.getText().toString()));
-						if( o2.getString("Password").equals(CryptoStuff.hashPWSha256(passwordTextView.getText().toString())) ) {
-							
-							Intent intent = new Intent( this, MainForm.class);
-							
-							//for Heather debugging
-							//Intent intent = new Intent( this, AppBookSearch.class);
-							int admin = o2.getInt("userType");
-							Log.d("Login", "usertype is gotten");
-							if(admin == 1) Variables.setAdmin(true);	
-							
-							Variables.setUserId(o2.getInt("userID"));
-							intent.putExtra(Login.EXTRA_USERID, Variables.getUserId());
-							startActivity(intent);
-						}
-						else {
-							Toast.makeText(getApplicationContext(), "Invalid Password", Toast.LENGTH_LONG).show();
-						}
+						
+						Intent intent = new Intent( this, MainForm.class);
+						
+						//for Heather debugging
+						//Intent intent = new Intent( this, AppBookSearch.class);
+						int admin = o2.getInt("userType");
+						Log.d("Login", "usertype is gotten");
+						if(admin == 1) Variables.setAdmin(true);	
+						
+						Variables.setUserId(o2.getInt("userID"));
+						intent.putExtra(Login.EXTRA_USERID, Variables.getUserId());
+						startActivity(intent);
 					}
-					else
-					{
+					else {
 						Toast.makeText(getApplicationContext(), "User Name or Email not found", Toast.LENGTH_LONG).show();
 					}
 					Log.d(TAG,"Rows= " + row);
