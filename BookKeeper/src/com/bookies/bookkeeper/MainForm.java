@@ -50,46 +50,28 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import org.json.*;
 
-
 public class MainForm extends ExpandableListActivity implements QueryCallback {
 	private static BookList bookList = null;//personal
 	private static BookList mainBookList = null;
-	private static BookList friendBookList = null; // also used for admin
-	private static ArrayList<RecBook> recList = null;
 	private ArrayList<ExpandableParent> parentItems = new ArrayList<ExpandableParent>();
 	private static int viewingList = 0; 
-	private static int friendID;
 	public static String isbn;
-	//viewingList - 0 = 0- mylist
-	//viewingList - 1 = mainlist
-	//viewingList - 2 = friend's list
+	/* viewingList - 0 mylist; 1 mainlist; 2 friend list */
 	
 	SharedPreferences prefs;
 	private PreferenceChangeListener mPreferenceListener = null;
 
 	private static final int QUERY_SELECT_TEST = 1;
 	private static final int QUERY_MAINLIST = 2;
-	private static final int QUERY_FRIEND_LIST = 3;
-	private static final int QUERY_REC_LIST = 4; // recommendations
-	private static final int QUERY_DELETE_REC = 5;
-	private static final int QUERY_DELETE_REC_AA = 6;
+	private static final int QUERY_DELETE_REC_AA = 6; /* I'll get rid of this later */
 	private static final int QUERY_ADD_BOOK = 10;
 	List<Map<String, String>> rows;
 	public static BookList getMyList(){
 		return bookList;
 	}
-	public static BookList getFriendList(){
-		return friendBookList;
-	}
-	public static ArrayList<RecBook> getRecommendationsList(){
-		return recList;
-	}
 	public static BookList getMainList(){
 		//Warning MAY RETURN NULL
 		return mainBookList;
-	}
-	public static int getFriendID(){
-		return friendID;
 	}
 	public static int getViewing(){
 		return viewingList;
@@ -105,14 +87,14 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		 //CALL PROPER QUERY
 		 switch(view){
 		 	case 0:
-		 		getWebBookList();
+		 		getMyBookList();
 		 		break;
 		 	case 1:
-		 		getMainBookList(); //replaced get main list
+		 		getAppBookList(); //replaced get main list
 		 		break;
 		 	default:
 		 		//-1 etc
-		 		getWebBookList();
+		 		getMyBookList();
 		 }
 		 prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 mPreferenceListener = new PreferenceChangeListener();
@@ -126,16 +108,16 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	   ApplySettings();
 	  }
 	 }
+	/* apply all the settings in the app */
 	public void ApplySettings() {
-		  // edittext preference
 		 parentItems = new ArrayList<ExpandableParent>();
 		 ExpandableListView expandableList = getExpandableListView();
 		 expandableList.setDividerHeight(2);
 		 expandableList.setGroupIndicator(null);
 		 expandableList.setClickable(true);
 		 
-		 setData();
-		 setTitle();
+		 setData(); // load specific library
+		 setTitle(); // set the title of the page
 		
 		 MyExpandableAdapter adapter = new MyExpandableAdapter(parentItems, findViewById(R.id.progressBar));
 		 
@@ -143,6 +125,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		 expandableList.setAdapter(adapter);
 		 expandableList.setOnChildClickListener((OnChildClickListener) this);
 	}
+	/* Display the title at the top of the page */
 	public void setTitle(){
 		switch(viewingList){
 	 	case 0:
@@ -153,34 +136,25 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	 		break;
 		}
 	}
-	public void getWebBookList(){
+	/* get My Personal Book List */
+	public void getMyBookList(){
 		bookList = null;
 		//this method pulls the book list from the web. Since we don't currently have this set up...
 		String query = "select USER_LIB.*, BOOK.*"+
 		"from USER_LIB join BOOK on USER_LIB.ISBN = BOOK.ISBN "+
 		"where USER_LIB.userID = " + Variables.getUserId();
-		Log.d("Mainform", "Query = " + query);
+		Log.d("Mainform getMyList", "Query = " + query);
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_SELECT_TEST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
-		
-		
 	}
-	public void getMainBookList(){
+	/* get the App Book List */
+	public void getAppBookList(){
 		mainBookList = null;
 		//this method pulls the book list from the web. Since we don't currently have this set up...
 		String query = "select BOOK.ISBN, BOOK.Title, BOOK.Author, BOOK.numOfRatings, BOOK.sumOfRatings "+
 		"from BOOK where BOOK.bookStatus = 1";
-		Log.d("Mainform", "Query = " + query);
+		Log.d("Mainform getMainList", "Query = " + query);
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_MAINLIST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
 		
-	}
-	public void getRecList(){
-		
-		//this method pulls the book list from the web. Since we don't currently have this set up...
-		String query = "select rec.*, BOOK.* from BOOK join (select Recommendations.*, USER.Username "+
-				"from Recommendations join USER on Recommendations.RecommenderID = USER.userID) as rec on " + 
-				"rec.BookID = BOOK.ISBN where rec.FriendID = " + Variables.getUserId();
-		Log.d("Mainform", "Query = " + query);
-		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_REC_LIST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
 	}
 	public void onQueryTaskCompleted(int code, JSONObject result) {
 		try {
@@ -188,91 +162,47 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 				case QUERY_SELECT_TEST:
 					if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
 						int size = result.length();
-						Log.d("WebQuery", "Results: " + size);
-						Log.d("WebQuery", result.toString());
+						Log.d("WebQuery SELECT_TEST", "Results: " + size);
+						Log.d("WebQuery SELECT_TEST Str", result.toString());
 						ArrayList<BookInfo> listing = new ArrayList<BookInfo>();
 						JSONObject o2;
 						Iterator<String> keys = result.keys();
 					    while (keys.hasNext()){
 					    	String key = keys.next();
-					    	//System.out.println("key = " + key);
-					    	//is next value a String or a JSONObject?
+					    	// is next value a String or a JSONObject?
 					    	if(key.equals("checksum") || key.equals("response_status")) continue;
 					    	if(utility.JSONStuff.isNumericInt(key)){
-					    		//decode the decoded json... 
+					    		// decode the decoded json... 
 					    		SimpleDateFormat parser = new SimpleDateFormat("yyyy-mm-dd");
 					    		o2 = new JSONObject(result.getString(key));
 					    		try {
 									listing.add(new BookInfo(o2.getString("ISBN"), o2.getString("Title"),o2.getString("Author"), o2.getInt("Rating"), o2.getInt("Status"), parser.parse(o2.getString("dateRead")), o2.getString("Comments"), o2.getInt("bookSecurity")));
 								} catch (ParseException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-					    		
 					    	}
 					    }
 					    bookList = new BookList(listing);
 					    viewingList = 0;
-			    		getRecList();
-					    //end of while, add some nonsense values so we can look at m...
-					   
+					    ApplySettings();
 					} else {
 						Toast.makeText(getApplicationContext(), "No Books Found", Toast.LENGTH_LONG).show();
-						Log.d("WebQueryMyList", "No books found " + result);
+						Log.d("WebQuery SELECT_TEST No Books Found", "No books found " + result);
 						bookList = new BookList(new ArrayList<BookInfo>());
-						getRecList();
 					}
-					break;
-				case QUERY_DELETE_REC:
-					getWebBookList();
-					break;
-				case QUERY_REC_LIST:
-					recList = new ArrayList<RecBook>(); // cancel out the list if null, don't set if no recommendations for you.
-					if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
-						int size = result.length();
-						Log.d("WebQuery", "Results: " + size);
-						Log.d("WebQuery", result.toString());
-						ArrayList<RecBook> listing = new ArrayList<RecBook>();
-						JSONObject o2;
-						Iterator<String> keys = result.keys();
-					    while (keys.hasNext()){
-					    	String key = keys.next();
-					    	//System.out.println("key = " + key);
-					    	//is next value a String or a JSONObject?
-					    	if(key.equals("checksum") || key.equals("response_status")) continue;
-					    	if(utility.JSONStuff.isNumericInt(key)){
-					    		//decode the decoded json... 
-					    		SimpleDateFormat parser = new SimpleDateFormat("yyyy-mm-dd");
-					    		o2 = new JSONObject(result.getString(key));
-					    		
-					    		listing.add(new RecBook(o2.getInt("RecommendationID"),o2.getString("ISBN"), o2.getString("Title"),o2.getString("Author"), o2.getString("Username"), o2.getInt("RecommenderID"), o2.getString("Comment")));
-								
-					    		
-					    	}
-					    }
-					    recList = listing;
-					    //end of while, add some nonsense values so we can look at m...
-					   
-					} else {
-						Log.d("WebQueryMyList", "No books found " + result);
-					}
-					
-					ApplySettings();
-					break;
-				case QUERY_MAINLIST:
-					//showing Main List
+					break; /* end SELECT_TEST */
+				case QUERY_MAINLIST: /* display App Library */
 					if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
 						int row = 0;
 						int size = result.length();
-						Log.d("WebQuery", "Results: " + size);
-						Log.d("WebQuery", result.toString());
+						Log.d("WebQuery MAINLIST", "Results: " + size);
+						Log.d("WebQuery MAINLIST Str", result.toString());
 						ArrayList<BookInfo> listing = new ArrayList<BookInfo>();
 						JSONObject o2;
 						Iterator<String> keys = result.keys();
 					    while (keys.hasNext()){
 					    	String key = keys.next();
-					    	//System.out.println("key = " + key);
-					    	//is next value a String or a JSONObject?
+					    	// is next value a String or a JSONObject?
 					    	if(key.equals("checksum") || key.equals("response_status")) continue;
 					    	if(utility.JSONStuff.isNumericInt(key)){
 					    		//decode the decoded json... 
@@ -284,101 +214,46 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 					    		   rating = o2.getInt("sumOfRatings") / o2.getInt("numOfRatings");
 					    		}
 					    		listing.add(new BookInfo(o2.getString("ISBN"), o2.getString("Title"),o2.getString("Author"), rating, 4 ));
-					    		
 					    	}
 					    }
 					    mainBookList = new BookList(listing);
 					    updateMainList();
 					    viewingList = 1;
 			    		ApplySettings();
-					    //end of while, add some nonsense values so we can look at m...
-					   
 					} else {
 						Toast.makeText(getApplicationContext(), "No Books Founds.", Toast.LENGTH_LONG).show();
-						Log.d("WebQueryMainList", "No Books found " + result);
+						Log.d("WebQuery MAINLIST No Books Found", "No Books found " + result);
 						setTitle();
 					}
 					break;
-				case QUERY_ADD_BOOK:
-					//showing Main List
+				case QUERY_ADD_BOOK: /* add a book */
 					if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
-						Log.d("WebQuery", "Added BOOK YAY!");
-						String query = "delete from Recommendations where BookID = " + Variables.getIsbn() + " and FriendID = " + Variables.getUserId(); //isbn is in first child
-						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_DELETE_REC_AA, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
+						Log.d("WebQuery ADD_BOOK", "Added BOOK YAY!");
+						Toast.makeText(getApplicationContext(), "Added Book to Library", Toast.LENGTH_LONG).show();
+						/*String query = "delete from Recommendations where BookID = " + Variables.getIsbn() + " and FriendID = " + Variables.getUserId(); //isbn is in first child
+						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_DELETE_REC_AA, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();*/
 					} else {
 						Toast.makeText(getApplicationContext(), "Could not add", Toast.LENGTH_LONG).show();
-						Log.e("WebQuery", "*** Error: " + result);
+						Log.e("WebQuery ADD_BOOK", "*** Error: " + result);
 					}
 					break;
-					case QUERY_DELETE_REC_AA:
-					Intent intent = new Intent(this, AddBookFromAppLib.class);
-					
-					if(viewingList == 2){
-						getWebBookList();
-						intent.putExtra("VIEWING", 2);
-						
-					}else{
-						intent.putExtra("Viewing", viewingList);
-						getWebBookList();
-					}
-					startActivity(intent);
-					break;
-				case QUERY_FRIEND_LIST:
-					if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
-						int size = result.length();
-						Log.d("FriendQuery", "Results: " + size);
-						Log.d("FriendQuery", result.toString());
-						ArrayList<BookInfo> listing = new ArrayList<BookInfo>();
-						JSONObject o2;
-						Iterator<String> keys = result.keys();
-					    while (keys.hasNext()){
-					    	String key = keys.next();
-					    	//System.out.println("key = " + key);
-					    	//is next value a String or a JSONObject?
-					    	if(key.equals("checksum") || key.equals("response_status")) continue;
-					    	if(utility.JSONStuff.isNumericInt(key)){
-					    		//decode the decoded json... 
-					    		SimpleDateFormat parser = new SimpleDateFormat("yyyy-mm-dd");
-					    		o2 = new JSONObject(result.getString(key));
-					    		try {
-									listing.add(new BookInfo(o2.getString("ISBN"), o2.getString("Title"),o2.getString("Author"), o2.getInt("Rating"), o2.getInt("Status"), parser.parse(o2.getString("dateRead")), o2.getString("Comments"), o2.getInt("bookSecurity")));
-								} catch (ParseException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-					    		
-					    	}
-					    }
-					    friendBookList = new BookList(listing);
-					    viewingList = 2;
-					    updateFriendList();
-			    		ApplySettings();
-					    //end of while, add some nonsense values so we can look at m...
-					   
-					} else {
-						Toast.makeText(getApplicationContext(), "Your friend has no books in their list", Toast.LENGTH_LONG).show();
-						Log.d("WebQuery", "Friend has no books " + result);
-						setTitle();
-					}
-					break;
+				/*case QUERY_DELETE_REC_AA: // DELETE LATER 
+					break;*/
 				default:
-					Log.e("WebQuery", "*** Error: unknown code");
+					Log.e("WebQuery FRIEND_LIST", "*** Error: unknown code");
 			}
-			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 	public void updateMainList(){
 		//this method goes through the "main" list for each book in "my" list to set the correct status.
 		//for a full sized app- mainBookList would need to be ordered by ISBN with a binary search
 		//since we are working with < 10,000 items.... >.>;
 		//we can order by using the select statment if anyone thinks we should.
-		Log.d("mainform: ","Entered updateMainList");
+		Log.d("Mainform updateMainList","Entered updateMainList");
 		if(bookList == null){
-			Log.d("mainlist", "myList, my list!!! IT'S NULL!!!!!!!");
+			Log.d("Mainform mainlist NULL", "myList, my list!!! IT'S NULL!!!!!!!");
 			return;
 		}
 		String isbn;
@@ -396,36 +271,10 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			}
 		}
 	}
-	public void updateFriendList(){
-		//this method goes through the "main" list for each book in "my" list to set the correct status.
-		//for a full sized app- mainBookList would need to be ordered by ISBN with a binary search
-		//since we are working with < 10,000 items.... >.>;
-		//we can order by using the select statment if anyone thinks we should.
-		Log.d("mainform: ","Entered updateMainList");
-		if(bookList == null){
-			Log.e("mainlist", "myList, my list!!! IT'S NULL!!!!!!!");
-			return;
-		}
-		String isbn;
-		BookInfo a;
-		
-		for(int i = 0; i < bookList.getList().size(); i++){
-			isbn = bookList.getList().get(i).getBookID();
-			mainFor:
-			for(int j=0; j<friendBookList.getList().size(); j++){
-				a = friendBookList.getList().get(j);
-				if(a.getBookID().equals(isbn)){
-					a.setMyStatus(bookList.getList().get(i).getBookStatus());
-					a.setMyRating(bookList.getList().get(i).getRating());
-					break mainFor; // break out of the for-loop because we have our book.
-				}
-			}
-		}
-	}
 	@SuppressWarnings("deprecation")
 	public void setData() {
-		Log.d("mainform: ", "Entered set data");
-		//call to pull book information from server and file into Listing
+		Log.d("Mainform setData", "Entered set data");
+		/* call to pull book information from server and file into Listing */
 		ArrayList<ExpandableChild> child;
 		//apply filters and sorts 
 		//pull preferences
@@ -443,9 +292,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			case 1:
 				listing = mainBookList.getList(filter, arrange, title, author);
 				break;
-			case 2:
-				listing = friendBookList.getList(filter, arrange, title, author);
-				break;
 			default:
 				listing = bookList.getList(filter, arrange, title, author);
 		}
@@ -462,12 +308,7 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			}else{
 				child.add(new ExpandableChild("Rating: " + listing.get(i).getRating(), false));
 			}
-			if(viewingList == 2){
-				if(listing.get(i).getMyRating() != -1){
-					child.add(new ExpandableChild("Your Rating: " + listing.get(i).getMyRating(), false));
-				}
-			}
-			if(viewingList == 0){
+			if(viewingList == 0){ /* My Book List */
 				DateFormat dtStr = new SimpleDateFormat("mm/dd/yyyy");
 				String dt = dtStr.format(listing.get(i).getDateRead());
 				if(!dt.equals("00/31/0002")){
@@ -475,88 +316,36 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 				}else{
 					child.add(new ExpandableChild("Read Date: Not Set", false));
 				}
-  				
 				child.add(new ExpandableChild("Your comments: "+ listing.get(i).getUserComment(), false));
-			}
-			if(viewingList == 2){
-				DateFormat dtStr = new SimpleDateFormat("mm/dd/yyyy");
-				String dt = dtStr.format(listing.get(i).getDateRead());
-				if(!dt.equals("00/31/0002")){
-					child.add(new ExpandableChild("Read Date: "+ dt, false));
-				}else{
-					child.add(new ExpandableChild("Read Date: Not Set", false));
-				}
-				child.add(new ExpandableChild("Their comments: "+ listing.get(i).getUserComment(), false));
 			}
 			/*Status
 			 * 1= Read
 			 * 2= Want to Read/ wish list
 			 * 3= Currently Reading
-			 * 
 			 */
-			if(viewingList != 2){
-				switch(listing.get(i).getBookStatus()){
-					case 2:
-						child.add(new ExpandableChild("Status: Wishlist", false));
-						icon = "wishlist";
-						child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					case 1:
-						child.add(new ExpandableChild("Status: Read", false));
-						icon = "bookread";
-						child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					case 3:
-						child.add(new ExpandableChild("Status: Reading", false));
-						icon = "bookreading";
-						child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					default:
-						icon = "booklist";
-						child.add(new ExpandableChild("Add to my list", true));
-						child.add(new ExpandableChild("View Summary", true));
-				}
-			}else{
-				switch(listing.get(i).getBookStatus()){
-					case 2:
-						child.add(new ExpandableChild("Their Status: Wishlist", false));
-						icon = "wishlist";
-						break;
-					case 1:
-						child.add(new ExpandableChild("Their Status: Read", false));
-						icon = "bookread";
-						break;
-					case 3:
-						child.add(new ExpandableChild("Their Status: Reading", false));
-						icon = "bookreading";
-						break;
-					default:
-						//should not exist on the friend list
-				}
-				switch(listing.get(i).getMyStatus()){
-					case 2:
-						child.add(new ExpandableChild("Your Status: Wishlist", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					case 1:
-						child.add(new ExpandableChild("Your Status: Read", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					case 3:
-						child.add(new ExpandableChild("Your Status: Reading", false));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-						break;
-					default:
-						child.add(new ExpandableChild("Add to my list", true));
-						if(Variables.getAdmin()) child.add(new ExpandableChild("Edit Book", true));
-						child.add(new ExpandableChild("View Summary", true));
-				}
+			switch(listing.get(i).getBookStatus()){
+				case 2:
+					child.add(new ExpandableChild("Status: Wishlist", false));
+					icon = "wishlist";
+					child.add(new ExpandableChild("Edit Book", true));
+					child.add(new ExpandableChild("View Summary", true));
+					break;
+				case 1:
+					child.add(new ExpandableChild("Status: Read", false));
+					icon = "bookread";
+					child.add(new ExpandableChild("Edit Book", true));
+					child.add(new ExpandableChild("View Summary", true));
+					break;
+				case 3:
+					child.add(new ExpandableChild("Status: Reading", false));
+					icon = "bookreading";
+					child.add(new ExpandableChild("Edit Book", true));
+					child.add(new ExpandableChild("View Summary", true));
+					break;
+				default:
+					icon = "booklist";
+					child.add(new ExpandableChild("Add to my list", true));
+					child.add(new ExpandableChild("View Summary", true));
 			}
 			switch(arrange){
 			case 'a':
@@ -572,29 +361,9 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			parent.setChildren(child);
 			parentItems.add(parent);
 		}//end for
-		if(viewingList == 0){
-			if(!recList.isEmpty()){
-				parentItems.add(new ExpandableParent("Recommendations", "Your friends think you might like", "ic_rec"));
-				ExpandableParent parent;
-				
-				for(int i = 0; i < recList.size(); i++){
-					child = new ArrayList<ExpandableChild>();
-					parent = new ExpandableParent(recList.get(i).getBookName(), recList.get(i).getBookAuthor(), "ic_rec");
-					child.add(new ExpandableChild(recList.get(i).getBookID(), false));
-					child.add(new ExpandableChild("Recommended by: "+ recList.get(i).getRecommenderName(), false));
-					child.add(new ExpandableChild("They said: "+ recList.get(i).getUserComment(), false));
-					child.add(new ExpandableChild("Add to my list", true));
-					child.add(new ExpandableChild("Reject", true));
-					child.add(new ExpandableChild("Reject all for this book", true));
-					parent.setChildren(child);
-					parentItems.add(parent);
-				}
-			}
-		}
 		if(parentItems.isEmpty()){
 			parentItems.add(new ExpandableParent("You have no books!!","Use the menu to add some.","booklist"));
 		}
-		
     }
 	
 	protected boolean validDate(String date, DateFormat df){
@@ -615,7 +384,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		}else{
 			inflater.inflate(R.menu.main_form, menu);
 		}
-		
 		// Inflate the menu; this adds items to the action bar if it is present.
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -627,55 +395,47 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch(item.getItemId()){
 			case R.id.action_settings:
-				Log.d("Menu", "Preferences Selected");
+				Log.d("Menu action_settings", "Preferences Selected");
 				startActivity(new Intent(this, Prefs.class));
 				return true;
 			case R.id.viewMyList:
-				Log.d("Menu", "My List Selected");
-				getWebBookList();
+				Log.d("Menu viewMyList", "My List Selected");
+				getMyBookList();
 				return true;
 			case R.id.viewMainList:
-				Log.d("Menu", "Main List Selected");
-				getMainBookList();
+				Log.d("Menu viewMainList", "Main List Selected");
+				getAppBookList();
 				return true;
 	        case R.id.editUser:
+	        	Log.d("Menu editUser", "Main List Selected");
 	        	Intent editUser = new Intent( this, SearchUser.class);
 	        	startActivity(editUser);
 	            return true;
 	        case R.id.editBook:
+	        	Log.d("Menu editBook", "Book List Selected");
 	        	Intent editBook = new Intent( this, AppBookSearch.class);
 				startActivity(editBook);
 	            return true;
 	        case R.id.scanBook:
-//	    		IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-//	    		intentIntegrator.initiateScan();
+	        	Log.d("Menu scanBook", "Main List Selected");
 	        	Intent scanBook = new Intent(this, AddBookChoice.class);
 	        	startActivity(scanBook);
 	    		return true;
 	        case R.id.change_pw:
+	        	Log.d("Menu change_pw", "Main List Selected");
 	        	Intent changePW = new Intent( this, ChangePw.class);
 	        	startActivity(changePW);
 	        	return true;
 	        case R.id.logOut:
+	        	Log.d("Menu logout", "Main List Selected");
 	        	Variables.setAdmin(false);
 	        	Variables.setUserId(-1);
 	        	Intent login = new Intent(this, Login.class);
 	        	login.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 	        	login.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        	//login.putExtra("EXIT", true);
 	        	startActivity(login);
 	        	finish();
 	        	return true;
-	        case R.id.viewUserList:
-	        	Intent userList = new Intent( this, UserForm.class);
-				userList.putExtra("VIEWING", 0);
-				startActivity(userList);
-				return true;
-	        case R.id.viewFriendsList:
-	        	Intent friendList = new Intent( this, UserForm.class);
-				friendList.putExtra("VIEWING", 1);
-				startActivity(friendList);
-				return true;
 		}
 		return false;
 	}
@@ -685,10 +445,8 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	 */
 	@SuppressLint("NewApi")
 	public static class PlaceholderFragment extends Fragment {
-
 		public PlaceholderFragment() {
 		}
-
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -697,5 +455,4 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 			return rootView;
 		}
 	}
-		
 }

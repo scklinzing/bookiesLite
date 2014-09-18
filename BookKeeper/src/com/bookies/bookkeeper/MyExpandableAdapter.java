@@ -48,7 +48,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 	private Context context;
 	private View barView;
 	
-		
 	//holds info to pass  HP added
 	public final static String EXTRA_ISBN = "com.bookies.bookkeeper.ISBN";
 	public final static String EXTRA_AUTHOR = "com.bookies.bookkeeper.AUTHOR";
@@ -60,8 +59,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 	public final static String EXTRA_ID = "com.bookies.bookkeeper.ID";
 	public final static String EXTRA_DATE = "com.bookies.bookkeeper.DATE";
 	public final static String EXTRA_USERID = "com.bookies.bookkeeper.USERID";
-
-
 
 	public MyExpandableAdapter(ArrayList<ExpandableParent> parents, View v) {
         this.parentItems = parents;
@@ -85,7 +82,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 				if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("success")) {
 					Log.d("WebQuery", "Added Book" + result);
 				} else {
-					
 					Log.e("WebQuery", "*** Error: " + result);
 				}
 			}
@@ -97,12 +93,9 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 	}
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		
-		if( ChildClickStatus!=childPosition)
-        {
+		if( ChildClickStatus!=childPosition) {
            ChildClickStatus = childPosition; 
         }  
-         
         return childPosition;
 	}
 	
@@ -116,7 +109,9 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
         final Context context = parentView.getContext();
         if(child.getButton()){
         	( (TextView) convertView.findViewById(R.id.optionalChildButton)).setText(child.getText());
-        	if(child.getText().equals("Edit Review")){
+        	
+        	/* this is for Edit Book on the Book Click Menu */
+        	if(child.getText().equals("Edit Book")){
         		//add action listener if book = edit book.
         		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
 					@Override
@@ -126,11 +121,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 						Intent intent = new Intent(context, EditPersonalBook.class);
 						intent.putExtra(EXTRA_ISBN, isbn);  //HP changed
 						BookInfo book;
-						if(MainForm.getViewing() == 2){
-							book = MainForm.getFriendList().getISBN(isbn);
-						}else{
-							book = MainForm.getMyList().getISBN(isbn);
-						}
+						book = MainForm.getMyList().getISBN(isbn);
 						
 						if(book == null){
 							Toast.makeText(context, "Could not find ISBN " + isbn + " in my list!", Toast.LENGTH_SHORT).show();
@@ -145,45 +136,11 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 						intent.putExtra(EXTRA_ID, book.getBookID()); //HP added
 						intent.putExtra(EXTRA_DATE, book.getDateRead().getTime()); //HP added
 						intent.putExtra("VIEWING", MainForm.getViewing());
-						if(MainForm.getViewing() == 2){
-							intent.putExtra(EXTRA_USERID, MainForm.getFriendID());
-						}				
 						context.startActivity(intent);
 					}      			
         		});
         	}//end if "edit Review"
-        	if(child.getText().equals("Reject")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						String query;
-						// TODO Auto-generated method stub
-						int a = MainForm.getMyList().getList().size();
-						if(MainForm.getMyList().getList().isEmpty()){
-							query = "delete from Recommendations where RecommendationID = " + MainForm.getRecommendationsList().get(groupPosition-1).getRecID(); //delete just that one
-						}else{
-							query = "delete from Recommendations where RecommendationID = " + MainForm.getRecommendationsList().get(groupPosition-MainForm.getMyList().getList().size()-1).getRecID(); //delete just that one
-						}
-								
-						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_DELETE_REC, (QueryCallback) context, Variables.getRest(), barView).execute();
-						
-					}      			
-        		});
-        	}//end if reject
-        	if(child.getText().equals("Reject all for this book")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						String query = "delete from Recommendations where BookID = " + parent.getChildren().get(0).getText() + " and FriendID = " + Variables.getUserId(); //isbn is in first child
-						Log.d("ExpandableAdapter", "Query = " + query);
-						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_DELETE_REC, (QueryCallback) context, Variables.getRest(), barView).execute();
-									
-					}      			
-        		});
-        	}//end if reject all
+        	
         	if(child.getText().equals("View Summary")){
         		//add action listener if book = edit book.
         		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
@@ -197,7 +154,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 						context.startActivity(intent);
 					}      			
         		});
-        	}//end if "edit Review"
+        	}//end if "View Summary"
         	
         	if(child.getText().equals("Add to my list")){
         		//add action listener if book = edit book.
@@ -220,30 +177,14 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 					}      			
         		});
         	}
-        	if(child.getText().equals("Recommend to Friend")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						String isbn = parent.getChildren().get(0).getText();
-						MainForm.isbn = isbn;
-						Intent intent = new Intent(context, Recommendation.class);
-						intent.putExtra("ISBN", isbn);
-						context.startActivity(intent);
-					}
-        		});
-        	}
-        }else{
+        } else {
         	((TextView) convertView.findViewById(R.id.textView1)).setText(child.getText());
         	( convertView.findViewById(R.id.optionalChildButton)).setVisibility(View.GONE);	
         }
-        
         return convertView;
     }
     @Override
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return ((parentItems == null) || parentItems.isEmpty());
     }
 
@@ -255,7 +196,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
             size = parentItems.get(groupPosition).getChildren().size();
         return size;
     }
-
 
 	@Override
 	public Object getGroup(int groupPosition) {
@@ -280,11 +220,9 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		         
          ParentClickStatus=groupPosition;
          if(ParentClickStatus==0)
              ParentClickStatus=-1;
-          
          return groupPosition;
 	}
 
@@ -303,7 +241,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
         return convertView;
     }
 
-
 	@Override
 	public boolean hasStableIds() {
 		return false;
@@ -313,5 +250,4 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
 	}
-
 }
