@@ -92,60 +92,6 @@ public class ExpandableUserAdapter extends BaseExpandableListAdapter {
         final Context context = parentView.getContext();
         if(child.getButton()){
         	( (TextView) convertView.findViewById(R.id.optionalChildButton)).setText(child.getText());
-        	if(child.getText().equals("Edit User")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						String userID = parent.getChildren().get(0).getText();
-						User user = UserForm.getUserList().getID(Integer.parseInt(userID));
-						Intent intent = new Intent(context, EditUser.class);
-						intent.putExtra(EXTRA_FOUNDUSER, user.getID());
-						intent.putExtra(EXTRA_USERNAME, user.getUserName());
-						intent.putExtra(EXTRA_EMAIL, user.getEmail());
-						intent.putExtra(EXTRA_USERTYPE, user.getUserType());
-						intent.putExtra(EXTRA_USERSTATUS, user.getStatus());
-												
-						//userSecurity = b.getString(EXTRA_USERSECURITY);
-												
-						context.startActivity(intent);
-						}      			
-        		});
-        	}//end if "edit user"
-        	if(child.getText().equals("Accept Request")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						String userID = parent.getChildren().get(0).getText();
-						String query = "update FriendList "+
-								"set Status = 1"+
-								" where (UserID = " + Integer.parseInt(userID) + 
-								" and FriendUserID = " + Variables.getUserId() +")";
-								Log.d("ExpandableAdapter", "Query = " + query);
-						UserForm.editingUser = Integer.parseInt(userID);
-						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_ACCEPT_REQUEST, (QueryCallback) context, Variables.getRest(), null).execute();
-						}      			
-        		});
-        	}//end accept request
-        	if(child.getText().equals("Reject Request")){
-        		//add action listener if book = edit book.
-        		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						String userID = parent.getChildren().get(0).getText();
-						String query = "delete from FriendList "+
-								"where (UserID = " +Integer.parseInt(userID) + 
-								" and FriendUserID = " + Variables.getUserId() +")";
-								Log.d("ExpandableAdapter", "Query = " + query);
-						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_ACCEPT_REQUEST, (QueryCallback) context, Variables.getRest(), null).execute();
-						
-					}      			
-        		});
-        	}
         	if(child.getText().equals("View User Book List")){
         		//add action listener if book = edit book.
         		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){

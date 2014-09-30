@@ -180,8 +180,6 @@
        android:layout_marginTop="16dp"
         android:text="@string/date" />
 
-    
-
      <EditText
          android:id="@+id/editDate"
          android:layout_width="wrap_content"
@@ -212,47 +210,6 @@
          android:layout_toRightOf="@+id/Comments"
          android:ems="10"
          android:inputType="textMultiLine" />
-
-     
-       <RadioGroup
-           android:id="@+id/SecutiryRadioGroup"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignLeft="@+id/Security"
-           android:layout_below="@+id/Security"
-           android:orientation="horizontal" >
-
-           <RadioButton
-               android:id="@+id/radioPublic"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_public"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-           <RadioButton
-               android:id="@+id/radioFriends"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_friends_only"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-
-           <RadioButton
-               android:id="@+id/radioPrivate"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="@string/security_private"
-               android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
-       </RadioGroup>
-
-       <TextView
-           android:id="@+id/Security"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignLeft="@+id/StatusRadioGroup"
-           android:layout_below="@+id/StatusRadioGroup"
-            android:layout_marginTop="16dp"
-           android:text="@string/book_security"
-           android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
 
         <Button
             android:id="@+id/SubmitChangesButton"

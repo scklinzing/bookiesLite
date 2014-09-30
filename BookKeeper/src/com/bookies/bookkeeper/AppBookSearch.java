@@ -86,10 +86,6 @@ public class AppBookSearch extends ActionBarActivity implements QueryCallback {
 				list.putExtra(Login.EXTRA_USERID, Variables.getUserId());
 				startActivity(list);
 	            return true;
-	        case R.id.editUser:
-	        	Intent editUser = new Intent( this, SearchUser.class);
-	        	startActivity(editUser);
-	            return true;
 	        case R.id.editBook:
 	        	Intent editBook = new Intent( this, AppBookSearch.class);
 				startActivity(editBook);

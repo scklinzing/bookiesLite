@@ -83,9 +83,6 @@ public class AddBook extends ActionBarActivity implements QueryCallback    {
 		radioRead = (RadioButton) findViewById(R.id.radioRead);
 		radioWantToRead = (RadioButton) findViewById(R.id.radioWantToRead);
 		radioReading = (RadioButton) findViewById(R.id.radioReading);
-		radioPublic = (RadioButton) findViewById(R.id.radioPublic);
-		radioFriends = (RadioButton) findViewById(R.id.radioFriends);
-		radioPrivate = (RadioButton) findViewById(R.id.radioPrivate);
 		radioOne = (RadioButton) findViewById(R.id.radioOne);
 		radioTwo = (RadioButton) findViewById(R.id.radioTwo);
 		radioThree = (RadioButton) findViewById(R.id.radioThree);

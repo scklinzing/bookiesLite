@@ -402,15 +402,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 				Log.d("Menu viewMyList", "My List Selected");
 				getMyBookList();
 				return true;
-			case R.id.viewMainList:
-				Log.d("Menu viewMainList", "Main List Selected");
-				getAppBookList();
-				return true;
-	        case R.id.editUser:
-	        	Log.d("Menu editUser", "Main List Selected");
-	        	Intent editUser = new Intent( this, SearchUser.class);
-	        	startActivity(editUser);
-	            return true;
 	        case R.id.editBook:
 	        	Log.d("Menu editBook", "Book List Selected");
 	        	Intent editBook = new Intent( this, AppBookSearch.class);
@@ -421,16 +412,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	        	Intent scanBook = new Intent(this, AddBookChoice.class);
 	        	startActivity(scanBook);
 	    		return true;
-	        case R.id.logOut:
-	        	Log.d("Menu logout", "Main List Selected");
-	        	Variables.setAdmin(false);
-	        	Variables.setUserId(-1);
-	        	Intent login = new Intent(this, Login.class);
-	        	login.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-	        	login.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        	startActivity(login);
-	        	finish();
-	        	return true;
 		}
 		return false;
 	}

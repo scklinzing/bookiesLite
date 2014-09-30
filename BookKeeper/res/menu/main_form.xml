@@ -14,22 +14,11 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action_settings"/>
-    <!--
-         <item
-        android:id="@+id/viewMainList"
-        android:orderInCategory="101"
-        android:title="View App Library"
-        android:showAsAction="never"/>
-    -->
     <item
         android:id="@+id/viewMyList"
         android:orderInCategory="101"
         android:showAsAction="never"
         android:title="View My List"/>
-    <item
-        android:id="@+id/editUser"
-        android:orderInCategory="102"
-        android:showAsAction="never"
-        android:title="@string/edit_user2"/>
+
 
 </menu>
