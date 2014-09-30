@@ -3,64 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.bookies.bookkeeper.MainForm" >
 
-    
-        <item
+    <item
         android:id="@+id/scanBook"
         android:orderInCategory="99"
-        android:title="@string/addBookMenuItem"
-        android:showAsAction="never"/>
-        <!-- Removing Friends List
-    <item
-        android:id="@+id/viewFriendsList"
-        android:orderInCategory="97"
-        android:icon="@drawable/friends"
-        android:title="@string/viewFriendsListMenuItem"
-        android:showAsAction="always"/>
-        -->
+        android:showAsAction="never"
+        android:title="@string/addBookMenuItem"/>
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:icon="@drawable/filters"
-        android:title="@string/action_settings"
-        android:showAsAction="always"/>
-    <item
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_settings"/>
+    <!--
+         <item
         android:id="@+id/viewMainList"
         android:orderInCategory="101"
         android:title="View App Library"
         android:showAsAction="never"/>
-    <!-- <item 
-        android:id="@+id/change_pw"    
- 		android:orderInCategory="199"
-        android:title="Change Password"
-        android:showAsAction="never"/> -->
+    -->
     <item
         android:id="@+id/viewMyList"
         android:orderInCategory="101"
-        android:title="View My List"
-        android:showAsAction="never"/>
-    <!-- Remove View User List
-    <item
-        android:id="@+id/viewUserList"
-        android:orderInCategory="95"
-        android:title="View User List"
-        android:showAsAction="never"/>
+        android:showAsAction="never"
+        android:title="View My List"/>
+    <!--
+         <item
+        android:id="@+id/editUser"
+        android:orderInCategory="102"
+        android:showAsAction="never"
+        android:title="@string/edit_user2"/>
     -->
-    <item 
-        android:id="@+id/editUser"    
- 		android:orderInCategory="102"
-        android:title="@string/edit_user2"
-        android:showAsAction="never"/>
-        
-    <!-- 
-   <item 
-        android:id="@+id/editBook"    
- 		android:orderInCategory="103"
-        android:title="@string/book_edit"
-        android:showAsAction="never"/>
-        -->
-   <item 
-        android:id="@+id/logOut"    
- 		android:orderInCategory="200"
-        android:title="Logout"
-        android:showAsAction="never"/>
+
+
 </menu>

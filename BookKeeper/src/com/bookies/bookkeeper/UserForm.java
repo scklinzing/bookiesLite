@@ -473,10 +473,6 @@ public class UserForm extends ExpandableListActivity implements QueryCallback {
 	        	Intent scanBook = new Intent(this, AddBookChoice.class);
 	        	startActivity(scanBook);
 	    		return true;
-	        case R.id.change_pw:
-	        	Intent changePW = new Intent( this, ChangePw.class);
-	        	startActivity(changePW);
-	        	return true;
 	        case R.id.logOut:
 	        	Variables.setAdmin(false);
 	        	Variables.setUserId(-1);

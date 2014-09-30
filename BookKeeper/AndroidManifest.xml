@@ -103,10 +103,13 @@
     	    android:label="@string/add_book">
     	</activity>
     	
-    	<activity
+        <!--
+         	<activity
     	    android:name="com.bookies.bookkeeper.UserAgreement"
     	    android:label="@string/user_agreement">
     	</activity>
+        -->
+
     	
     	<activity
     	    android:name="com.bookies.bookkeeper.AddBookChoice"

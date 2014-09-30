@@ -421,11 +421,6 @@ public class MainForm extends ExpandableListActivity implements QueryCallback {
 	        	Intent scanBook = new Intent(this, AddBookChoice.class);
 	        	startActivity(scanBook);
 	    		return true;
-	        case R.id.change_pw:
-	        	Log.d("Menu change_pw", "Main List Selected");
-	        	Intent changePW = new Intent( this, ChangePw.class);
-	        	startActivity(changePW);
-	        	return true;
 	        case R.id.logOut:
 	        	Log.d("Menu logout", "Main List Selected");
 	        	Variables.setAdmin(false);

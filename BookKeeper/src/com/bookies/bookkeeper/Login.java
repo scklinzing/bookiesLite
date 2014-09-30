@@ -90,43 +90,14 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 		return true;
 	}
 	
-	public void createAccount( View view) {
-		Intent intent = new Intent( this, Register.class);
-		startActivity(intent);
-	}
-	
+	/* SIGN IN TO STUFF */
 	public void signin( View view ) {
-		//TODO
-		//Query Database for username to see if the user exists
-		
-		if( userNameTextView.getText().toString().isEmpty() )
-		{
-			Toast.makeText(getApplicationContext(), "Enter username and password", Toast.LENGTH_LONG).show();
-		}
-		//Check for email
-		else if ( userNameTextView.getText().toString().contains("@")) {
-			String email = userNameTextView.getText().toString();
-			String query = "select * from USER where Email = \"" + email + "\"";
-			//String query = ((TextView)findViewById(R.id.Query)).getText().toString();
-			//((TextView)findViewById(R.id.Query)).setText(query);
-			Log.d(TAG, "Query = " + query);
-			new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_SELECT_TEST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
-		}
-		//check for username
-		else
-		{
-			String userName = userNameTextView.getText().toString();
-			String query = "select * from USER where Username = \"" + userName + "\"";
-			//((TextView)findViewById(R.id.Query)).setText(query);
-			Log.d(TAG, "Query = " + query);
-			new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_SELECT_TEST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
-		}
-		
-	}
-	
-	public void forgotPassword( View view ) {
-		Intent intent = new Intent( this, ForgotPw.class);
-		startActivity(intent);
+		//String userName = userNameTextView.getText().toString();
+		/* I AM SO TIRED OF LOGGING IN YOU DON'T EVEN UNDERSTAND */
+		String userName = "Shelley"; 
+		String query = "select * from USER where Username = \"" + userName + "\"";
+		Log.d(TAG, "Query = " + query);
+		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, QUERY_SELECT_TEST, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
 	}
 
 	@Override
@@ -162,9 +133,10 @@ public class Login extends ActionBarActivity implements LoginCallback, QueryCall
 						row++;
 					}
 					
-					//row will always be 1 since we have unique users and we ar using a slect with a where clause
+					/* row will always be 1 since we have unique users and we are 
+					 * using a select with a where clause */
 					if( row == 1 ) {
-						/* ------------- SKIP PASSWORD CHECK --------------------- */
+						/* ------------- SKIP PASSWORD CHECK BECAUSE REASONS --------------------- */
 						JSONObject o2 = new JSONObject(result.getString(Integer.toString(0)));
 						
 						Intent intent = new Intent( this, MainForm.class);

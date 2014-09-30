@@ -28,7 +28,8 @@
         android:textSize="20sp" 
         android:onClick="signin"/>
     
-    <Button
+    <!--
+         <Button
         android:id="@+id/CreateAccountButton"
         android:layout_width="158dp"
         android:layout_height="36dp"
@@ -40,6 +41,7 @@
         android:text="@string/create_account"
         android:textColor="#F5F5F0"
         android:textSize="20sp" />
+    -->
 
     <EditText
         android:id="@+id/UserNameTextView"
@@ -66,8 +68,8 @@
         android:textColor="#000000"
         android:textColorHint="#000000" />
 
-
-    <Button
+    <!--
+         <Button
         android:id="@+id/ForgotPasswordButton"
         android:layout_width="158dp"
         android:layout_height="36dp"
@@ -80,6 +82,8 @@
         android:text="@string/forgot_password"
         android:textColor="#F5F5F0"
         android:textSize="20sp" />
+    -->
+
 
 </RelativeLayout>
 
