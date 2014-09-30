@@ -4,35 +4,39 @@
     tools:context="com.bookies.bookkeeper.MainForm" >
 
     <item
-        android:id="@+id/scanBook"
-        android:orderInCategory="99"
-        android:showAsAction="never"
-        android:title="@string/addBookMenuItem"/>
-    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/filters"
-        android:orderInCategory="100"
+        android:orderInCategory="99"
         android:showAsAction="always"
         android:title="@string/action_settings"/>
-    <!--
-         <item
-        android:id="@+id/viewMainList"
-        android:orderInCategory="101"
-        android:title="View App Library"
-        android:showAsAction="never"/>
-    -->
+    <item
+        android:id="@+id/scanBook"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/addBookMenuItem"/>
     <item
         android:id="@+id/viewMyList"
         android:orderInCategory="101"
         android:showAsAction="never"
-        android:title="View My List"/>
-    <!--
-         <item
-        android:id="@+id/editUser"
-        android:orderInCategory="102"
+        android:title="@string/sortByTitle"/>
+    <item
+        android:id="@+id/sortByAuthor"
+        android:orderInCategory="101"
         android:showAsAction="never"
-        android:title="@string/edit_user2"/>
-    -->
-
-
+        android:title="@string/sortByAuthor"/>
+    <item
+        android:id="@+id/sortByStatus"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/sortByStatus"/>
+    <item
+        android:id="@+id/sortByOwned"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/sortByOwned"/>
+    <item
+        android:id="@+id/search"
+        android:orderInCategory="101"
+        android:showAsAction="never"
+        android:title="@string/search"/>
 </menu>
