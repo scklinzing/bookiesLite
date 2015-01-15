@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:gravity="center"
-        android:text="You can add a book to the"
+        android:text="@string/YouCanAddABookToThe"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
          android:layout_marginTop="5dp"
-        android:text="library by scanning the "
+        android:text="@string/libraryByScanningThe"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <TextView
         android:id="@+id/textView3"
@@ -38,7 +38,7 @@
         android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="book's ISBN:"
+        android:text="@string/booksISBN"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
@@ -59,7 +59,7 @@
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Or"
+        android:text="@string/or"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -71,7 +71,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="Enter ISBN"
+        android:hint="@string/enterISBN"
         android:inputType="text" />
 
     <Button
@@ -82,17 +82,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:onClick="lookUp"
-        android:text="Look up by ISBN" />
+        android:text="@string/LookUpByISBN" />
 
     <Button
-        android:id="@+id/help"
+        android:id="@+id/manualAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="26dp"
-        android:onClick="help"
-        android:text="Help" />
+        android:onClick="manualAdd"
+        android:text="@string/ManuallyAddBook" />
 
 	</RelativeLayout>
 

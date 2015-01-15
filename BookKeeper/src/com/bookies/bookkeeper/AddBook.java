@@ -16,21 +16,11 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 /**
- * Checks to see if book is in application lib and user lib.
- * If not in application lib, will add new book to app lib and user lib.
- * If in application lib, will check user lib and add if not there.
- * 
- * @author Heather Persson
- *
+ * Checks to see if book is in library and adds it if it is not.
  */
 
 public class AddBook extends ActionBarActivity implements QueryCallback    {
-	
 	private static final int ADD_BOOK = 0;
-	private static final int ADD_USERLIB_0 = 10; // so we can remove recommendations
-	private static final int ADD_USERLIB = 1;
-	private static final int QUERY_BOOK = 2;
-	private static final int QUERY_USERLIB = 3;
 	
 	//for log identification
 	private static final String TAG = "AddBook";
@@ -42,14 +32,13 @@ public class AddBook extends ActionBarActivity implements QueryCallback    {
 	private EditText updateDate;
 	private EditText updateComments;
 	private RadioButton radioRead;
-	private RadioButton radioWantToRead;
+	//private RadioButton radioWantToRead;
 	private RadioButton radioReading;
+	private RadioButton isOwnedYes;
+	private RadioButton isOwnedNo;
 	private RadioButton radioOne;
-	private RadioButton radioPublic;
-	private RadioButton radioFriends;
-	private RadioButton radioPrivate;
-	private RadioButton radioThree;
 	private RadioButton radioTwo;
+	private RadioButton radioThree;
 	private RadioButton radioFour;
 	private RadioButton radioFive;
 	
@@ -57,267 +46,166 @@ public class AddBook extends ActionBarActivity implements QueryCallback    {
 	private String ISBN; //will not edit
 	private String title;  //will not edit
 	private String author;  //will not edit
-	private String status;
-	private String security;
-	private String rating;
+	private String status = "2"; // want to read
+	private String isOwned = "no"; // by default
+	private String rating = "0"; // no rating by default
 	private String dateRead;
 	private String comments;
 			
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_book);
-		
-		//pull data from passed intent
-		Intent intent = getIntent();
-		
-		ISBN = intent.getStringExtra(BookSummary.EXTRA_BOOK_ISBN);
-		author = intent.getStringExtra(BookSummary.EXTRA_BOOK_AUTHOR);
-		title = intent.getStringExtra(BookSummary.EXTRA_BOOK_TITLE);
+		try {
+			Log.d(TAG, "Made it to AddBook.java");
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.add_book);
 			
-		//save fields to set values
-		updateTitle = (EditText) findViewById(R.id.updateTitle);
-		updateAuthor= (EditText) findViewById(R.id.updateAuthor);
-		updateISBN= (EditText) findViewById(R.id.updateISBN);
-		updateDate= (EditText) findViewById(R.id.editDate);
-		updateComments= (EditText) findViewById(R.id.editComments);
-		radioRead = (RadioButton) findViewById(R.id.radioRead);
-		radioWantToRead = (RadioButton) findViewById(R.id.radioWantToRead);
-		radioReading = (RadioButton) findViewById(R.id.radioReading);
-		radioOne = (RadioButton) findViewById(R.id.radioOne);
-		radioTwo = (RadioButton) findViewById(R.id.radioTwo);
-		radioThree = (RadioButton) findViewById(R.id.radioThree);
-		radioFour = (RadioButton) findViewById(R.id.radioFour);
-		radioFive = (RadioButton) findViewById(R.id.radioFive);
-		
-		//set text values
-		updateISBN.setText(ISBN);
-		updateAuthor.setText(author);
-		updateTitle.setText(title);
-		radioRead.setChecked(true);
-		radioPublic.setChecked(true);
+			//pull data from passed intent
+			Intent intent = getIntent();
+			Log.d(TAG, "Made it past the intent");
+			
+			ISBN = intent.getStringExtra(BookSummary.EXTRA_BOOK_ISBN);
+			author = intent.getStringExtra(BookSummary.EXTRA_BOOK_AUTHOR);
+			title = intent.getStringExtra(BookSummary.EXTRA_BOOK_TITLE);
+			Log.d(TAG, "Got all intent extras!");
+				
+			//save fields to set values
+			updateTitle = (EditText) findViewById(R.id.updateTitle);
+			updateAuthor= (EditText) findViewById(R.id.updateAuthor);
+			updateISBN= (EditText) findViewById(R.id.updateISBN);
+			updateDate= (EditText) findViewById(R.id.editDate);
+			updateComments= (EditText) findViewById(R.id.editComments);
+			radioRead = (RadioButton) findViewById(R.id.radioRead);
+			//radioWantToRead = (RadioButton) findViewById(R.id.radioWantToRead);
+			radioReading = (RadioButton) findViewById(R.id.radioReading);
+			isOwnedYes = (RadioButton) findViewById(R.id.isOwnedYes);
+			isOwnedNo = (RadioButton) findViewById(R.id.isOwnedNo);
+			radioOne = (RadioButton) findViewById(R.id.radioOne);
+			radioTwo = (RadioButton) findViewById(R.id.radioTwo);
+			radioThree = (RadioButton) findViewById(R.id.radioThree);
+			radioFour = (RadioButton) findViewById(R.id.radioFour);
+			radioFive = (RadioButton) findViewById(R.id.radioFive);
+			
+			//set text values
+			updateISBN.setText(ISBN);
+			updateAuthor.setText(author);
+			updateTitle.setText(title);
+			radioRead.setChecked(true);
+			isOwnedNo.setChecked(true);
+			//radioPublic.setChecked(true);
+			
+			Log.d(TAG, "Got all the values");
+			
+		} catch (Exception e) {
+			Log.d(TAG, "Caught an exception in onCreate()");
+			e.printStackTrace();
+		}
 	}
 	
 	public void addBook(View view){
+		Log.d(TAG, "Made it to addBook()!");
 		//check to see if book exists in BOOK table
 		String ISBN = updateISBN.getText().toString();
 		String query = "select * from BOOK where ISBN = \"" + ISBN + "\"";
 		Log.d(TAG, "Query = " + query);
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
-				Variables.getSalt(), query, QUERY_BOOK, this, 
+				Variables.getSalt(), query, ADD_BOOK, this, 
+				Variables.getRest(), findViewById(R.id.progressBar)).execute();
+	}
+	
+	public void manualAddBook(View view){
+		Log.d(TAG, "Made it to manualAddBook()!");
+		//check to see if book exists in BOOK table
+		String ISBN = updateISBN.getText().toString();
+		String query = "select * from BOOK where ISBN = \"" + ISBN + "\"";
+		Log.d(TAG, "Query = " + query);
+		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
+				Variables.getSalt(), query, ADD_BOOK, this, 
 				Variables.getRest(), findViewById(R.id.progressBar)).execute();
 	}
 
 	@Override
 	public void onQueryTaskCompleted(int code, JSONObject result) {
-
+		Log.d(TAG, "Made it to onQueryTaskCompleted(int code, JSONObject result)!");
 		try {
-			//if book not found, add book to BOOK and USER_LIB
-			if(code == QUERY_BOOK) {
+			//if book not found, add book to BOOK
+			if(code == ADD_BOOK) {
 				if(result != null && !result.isNull("response_status") && result.getString("response_status").equalsIgnoreCase("error")) {
 				   if(result.getString("error").equalsIgnoreCase("No records found")){
+					   
+						// ISBN
+						if(!ISBN.equals(updateISBN.getText().toString())){
+							ISBN = updateISBN.getText().toString();			
+						}
+						
+						// author
+						if(!author.equals(updateAuthor.getText().toString())){
+							author = updateAuthor.getText().toString();
+						}
+						
+						// title
+						if(!title.equals(updateTitle.getText().toString())){
+							title = updateTitle.getText().toString();
+						}
 					
-						//add to BOOK
-						String query = "insert into BOOK (ISBN, Author, Title) "+
-								"values (\""+ ISBN +"\", \"" + author + "\", \"" + title +"\")";
+					   // status -- wishlist is default
+					   if (radioRead.isChecked()){
+							status = "1";
+						} else if (radioReading.isChecked()){
+							status = "3";
+						}
+					   
+					   // is owned?
+					   if(isOwnedYes.isChecked()){
+							isOwned = "yes";
+						}
+						
+						//rating
+						if(radioOne.isChecked()){
+							rating = "1";
+						} else if(radioTwo.isChecked()){
+							rating = "2";
+						} else if(radioThree.isChecked()){
+							rating = "3";
+						} else if(radioFour.isChecked()){
+							rating = "4";
+						} else if(radioFive.isChecked()){
+							rating = "5";
+						}
+						
+						//date read
+						//dateRead = "0000-00-00";
+						if(updateDate.length() > 0){
+							dateRead = updateDate.getText().toString();
+						}
+						
+						//comments
+						comments=" ";
+						if(updateComments.length() > 0){
+							comments = updateComments.getText().toString();			
+						}
+						Log.d(TAG, "Comment length = " + comments.length());
+						
+						// build the query
+						String query = "insert into BOOK (ISBN, Author, Title, Status, Comments, rating, dateRead, isOwned) "+
+								"values (\""+ ISBN +"\", \"" + author + "\", \"" + title + "\", \"" + status +"\", \"" + 
+								comments +"\", \""  + rating +"\", \"" + dateRead + "\", \"" + isOwned + "\")";
 								Log.d(TAG, "Query add BOOK = " + query);
 				
+						// execute query
 						new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
 								Variables.getSalt(), query, ADD_BOOK, this, 
 								Variables.getRest(), findViewById(R.id.progressBar)).execute();
+						
+						// print to say it was added
+						Toast.makeText(getApplicationContext(), "Book added to Library.", 
+								Toast.LENGTH_LONG).show();
 				   }
-				}
-				
-				//if book exists in BOOK, check to see if USER_LIB
-				else if(result != null && !result.isNull("response_status") && 
-				   result.getString("response_status").equalsIgnoreCase("success")){
-					
-					String ISBN = updateISBN.getText().toString();
-					String query = "select * from USER_LIB where ISBN = \"" + ISBN + 
-							"\" and userID= \"" + Variables.getUserId() + "\"";
-					Log.d(TAG, "Query CHECK USER LIB= " + query);
-					new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
-							Variables.getSalt(), query, QUERY_USERLIB, this, 
-							Variables.getRest(), findViewById(R.id.progressBar)).execute();
-				}
-				else {
-					Log.e(TAG, "*** Error: unknown code");
-				}
-			}
-			if(code == ADD_USERLIB_0){
-				if(result != null && !result.isNull("response_status") 
-						&& result.getString("response_status").equalsIgnoreCase("success")) {
-					
-					Toast.makeText(getApplicationContext(), "Book added to personal library.", 
-							Toast.LENGTH_LONG).show();
-					String query = "delete from Recommendations where BookID = " + ISBN + " and FriendID = " + Variables.getUserId(); //isbn is in first child
-					new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), Variables.getSalt(), query, ADD_USERLIB, this, Variables.getRest(), findViewById(R.id.progressBar)).execute();
-				}
-				else{
-					Toast.makeText(getApplicationContext(), "Error - Book not added to personal Library", 
-							Toast.LENGTH_LONG).show();
-				}
-
-			}
-			//check to see if book in USER_LIB, if not - pull updated fields and 
-			//add to personal library
-			if(code == QUERY_USERLIB) {
-				if(result != null && !result.isNull("response_status") && 
-						   result.getString("response_status").equalsIgnoreCase("error")) {
-					   if(result.getString("error").equalsIgnoreCase("No records found")){
-						   //update variables with updates on screen.
-						   //status
-						   status = "1";
-//							if (radioRead.isChecked()){
-//								status = "1";
-//							}
-							if (radioWantToRead.isChecked()){
-								status = "2";
-							}
-							else if (radioReading.isChecked()){
-								status = "3";
-							}
-							
-							//security
-							security="0";
-//							if (radioPublic.isChecked()){
-//								security = "0";
-//							}
-							if (radioFriends.isChecked()){
-								security = "1";
-							}
-							else if(radioPrivate.isChecked()){
-								security = "2";
-							}
-							
-							//rating
-							rating = "0";
-							if(radioOne.isChecked()){
-								rating = "1";
-							}
-							else if(radioTwo.isChecked()){
-								rating = "2";
-							}
-							else if(radioThree.isChecked()){
-								rating = "3";
-							}
-							else if(radioFour.isChecked()){
-								rating = "4";
-							}
-							else if(radioFive.isChecked()){
-								rating = "5";
-							}
-							
-							//date read
-							//dateRead = "0000-00-00";
-							if(updateDate.length() > 0){
-								dateRead = updateDate.getText().toString();
-							}
-							
-							//comments
-							comments=" ";
-							if(updateComments.length() > 0){
-								comments = updateComments.getText().toString();			
-							}
-							Log.d(TAG, "Comment length = " + comments.length());
-							
-							//book does not exist in USER LIB, so add
-							String query = "insert into USER_LIB (ISBN, userID, Status, bookSecurity, Comments, rating, dateRead) "+
-							"values (\""+ ISBN +"\", \"" + Variables.getUserId() +"\", \"" + status +"\", \"" + security 
-							+ "\", \""  + comments +"\", \""  + rating +"\", \"" + dateRead + "\")";
-									Log.d(TAG, "Query = " + query);
-					
-							new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
-									Variables.getSalt(), query, ADD_USERLIB_0, this, 
-									Variables.getRest(), findViewById(R.id.progressBar)).execute();
-					   }
-				}
-				else {
-					Toast.makeText(getApplicationContext(), "Book is already in personal library", 
-						Toast.LENGTH_LONG).show();
+				} else {
+					Log.e(TAG, "*** Error: unknown code when adding book. Error: " + result);
 				}
 			}
 			
+			// If successfully added to user library, return to main form
 			if(code == ADD_BOOK) {
-				if(result != null && !result.isNull("response_status") 
-						&& result.getString("response_status").equalsIgnoreCase("success")) {
-					
-					//update variables with updates on screen.
-					//status
-					status = "1";
-//					if (radioRead.isChecked()){
-//						status = "1";
-//					}
-					if (radioWantToRead.isChecked()){
-						status = "2";
-					}
-					else if (radioReading.isChecked()){
-						status = "3";
-					}
-					
-					//security
-					security="0";
-//					if (radioPublic.isChecked()){
-//						security = "0";
-//					}
-					if (radioFriends.isChecked()){
-						security = "1";
-					}
-					else if(radioPrivate.isChecked()){
-						security = "2";
-					}
-					
-					//rating
-					rating = "0";
-					if(radioOne.isChecked()){
-						rating = "1";
-					}
-					else if(radioTwo.isChecked()){
-						rating = "2";
-					}
-					else if(radioThree.isChecked()){
-						rating = "3";
-					}
-					else if(radioFour.isChecked()){
-						rating = "4";
-					}
-					else if(radioFive.isChecked()){
-						rating = "5";
-					}
-					
-					//date read
-					//dateRead = "0000/00/00";
-					if(updateDate.length() > 0){
-						dateRead = updateDate.getText().toString();
-					}
-					
-					//comments
-					comments=" ";
-					if(updateComments.length() > 0){
-						comments = updateComments.getText().toString();			
-					}
-					Log.d(TAG, "Comment length = " + comments.length());
-
-					//add to USER_LIB
-					String query2 = "insert into USER_LIB (ISBN, userID, Status, bookSecurity, Comments, rating, dateRead) "+
-							"values (\""+ ISBN +"\", \"" + Variables.getUserId() +"\", \"" + status +"\", \"" + security 
-							+ "\", \""  + comments +"\", \""  + rating +"\", \"" + dateRead + "\")";
-					Log.d(TAG, "Query = " + query2);
-			
-					new QueryTask(Variables.getWS_URL(), Variables.getSessionId(), 
-							Variables.getSalt(), query2, ADD_USERLIB, this, 
-							Variables.getRest(), findViewById(R.id.progressBar)).execute();
-					
-					Toast.makeText(getApplicationContext(), "Book added to application library.", 
-							Toast.LENGTH_LONG).show();
-				}
-				else{
-					Toast.makeText(getApplicationContext(), "Error - Book not added to application Library", 
-							Toast.LENGTH_LONG).show();
-				}
-			}
-			
-			if(code == ADD_USERLIB) {
-				
 					Intent intent = new Intent( this, MainForm.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -329,5 +217,4 @@ public class AddBook extends ActionBarActivity implements QueryCallback    {
 			e.printStackTrace();
 		}
 	}
-
 }

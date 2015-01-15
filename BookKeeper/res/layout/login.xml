@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bookshelf2"
-   >
-    
-   <ProgressBar
+    android:background="@drawable/bookshelf2" >
+
+    <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
@@ -17,164 +16,14 @@
     </ProgressBar>
 
     <Button
-        android:id="@+id/SigninButton"
+        android:id="@+id/RefreshButton"
         android:layout_width="158dp"
         android:layout_height="36dp"
-        android:layout_below="@+id/PasswordTextView"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:background="@drawable/buttonshape"
-        android:text="@string/signin"
-        android:textColor="#F5F5F0"
-        android:textSize="20sp" 
-        android:onClick="signin"/>
-    
-    <!--
-         <Button
-        android:id="@+id/CreateAccountButton"
-        android:layout_width="158dp"
-        android:layout_height="36dp"
-        android:layout_above="@+id/ForgotPasswordButton"
-        android:layout_alignLeft="@+id/ForgotPasswordButton"
-        android:layout_marginBottom="14dp"
-        android:background="@drawable/buttonshape"
-        android:onClick="createAccount"
-        android:text="@string/create_account"
+        android:onClick="refresh"
+        android:text="@string/refresh"
         android:textColor="#F5F5F0"
         android:textSize="20sp" />
-    -->
-
-    <EditText
-        android:id="@+id/UserNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:layout_above="@+id/PasswordTextView"
-       android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="User Name"
-        android:inputType="text"
-        android:textColor="#000000"
-        android:textColorHint="#000000" >
-    </EditText>
-
-    <EditText
-        android:id="@+id/PasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      	android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColor="#000000"
-        android:textColorHint="#000000" />
-
-    <!--
-         <Button
-        android:id="@+id/ForgotPasswordButton"
-        android:layout_width="158dp"
-        android:layout_height="36dp"
-        android:layout_alignLeft="@+id/SigninButton"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="41dp"
-        android:background="@drawable/buttonshape"
-        android:clickable="true"
-        android:onClick="forgotPassword"
-        android:text="@string/forgot_password"
-        android:textColor="#F5F5F0"
-        android:textSize="20sp" />
-    -->
-
-
 </RelativeLayout>
-
-
-
-
-<!-- ORIGINAL
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bookies.bookkeeper.MainActivity$PlaceholderFragment" >
-
-    <TextView
-        android:id="@+id/UserNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="160dp"
-        android:text="@string/user_name" />
-
-    <EditText
-        android:id="@+id/UserNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/UserNameLabel"
-        android:layout_alignBottom="@+id/UserNameLabel"
-        android:layout_toRightOf="@+id/UserNameLabel"
-        android:ems="10" 
-		android:inputType="text" />
-
-    <TextView
-        android:id="@+id/PasswordLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/UserNameTextView"
-        android:text="@string/password" />
-
-    <EditText
-        android:id="@+id/PasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/UserNameTextView"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/ForgotPasswordLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/forgot_password"
-        android:onClick="forgotPassword"
-        android:clickable="true" />
-
-    <Button
-        android:id="@+id/SigninButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/PasswordTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="@string/signin"
-        android:onClick="signin"/>
-
-    <TextView
-        android:id="@+id/NeedAccountLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/need_account" />
-
-    <Button
-        android:id="@+id/CreateAccountButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/NeedAccountLabel"
-        android:layout_centerHorizontal="true"
-        android:text="@string/create_account"
-        android:onClick="createAccount" />
-
-</RelativeLayout>
--->

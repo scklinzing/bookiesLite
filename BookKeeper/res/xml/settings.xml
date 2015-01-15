@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
+	<Preference 
+	    android:key="addBook"
+        android:title="@string/add_book"
+        android:summary="@string/add_book_summary"
+        />
 	<ListPreference
 		android:key="arrangeBy"
 		android:title="@string/arrange_by"
@@ -44,8 +49,5 @@
     <Preference 
         android:title="Return to list"
         android:key="returnButton"
-        android:summary="Apply filter and sort and return to list"
-        
-        />
-	
+        android:summary="Apply filter and sort and return to list" />
 </PreferenceScreen>

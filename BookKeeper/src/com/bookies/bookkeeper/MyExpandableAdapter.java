@@ -1,16 +1,11 @@
 package com.bookies.bookkeeper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import supportClasses.BookInfo;
-import supportClasses.BookList;
-import supportClasses.HackInterface;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -20,32 +15,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.CompoundButton;
 import android.util.Log;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 import com.bookies.bookkeeper.R;
 import com.madmarcos.resttest.QueryCallback;
 import com.madmarcos.resttest.QueryTask;
 
 public class MyExpandableAdapter extends BaseExpandableListAdapter implements QueryCallback {
+	private static final String TAG = "MyExpandableAdapter";
+	
 	private Activity activity;
 	private LayoutInflater inflater;
 	private ArrayList<ExpandableParent> parentItems;
-	private ArrayList<ExpandableChild> child;
 	private int ParentClickStatus=-1;
 	private int ChildClickStatus=-1;
 	private int QUERY_ADD_BOOK = 10;
-	private static final int QUERY_DELETE_REC = 5;
-	private Context context;
 	private View barView;
 	
 	//holds info to pass  HP added
@@ -55,7 +42,7 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 	public final static String EXTRA_RATING = "com.bookies.bookkeeper.RATING";
 	public final static String EXTRA_STATUS = "com.bookies.bookkeeper.STATUS";
 	public final static String EXTRA_COMMENT = "com.bookies.bookkeeper.COMMENT";
-	public final static String EXTRA_SECURITY = "com.bookies.bookkeeper.SECURITY";
+	public final static String EXTRA_ISOWNED = "com.bookies.bookkeeper.ISOWNED";
 	public final static String EXTRA_ID = "com.bookies.bookkeeper.ID";
 	public final static String EXTRA_DATE = "com.bookies.bookkeeper.DATE";
 	public final static String EXTRA_USERID = "com.bookies.bookkeeper.USERID";
@@ -88,8 +75,6 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
@@ -116,15 +101,14 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
         		( convertView.findViewById(R.id.optionalChildButton)).setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
 						String isbn = parent.getChildren().get(0).getText();
+						isbn = isbn.substring(6); // cut off "ISBN: " at the beginning
 						Intent intent = new Intent(context, EditPersonalBook.class);
 						intent.putExtra(EXTRA_ISBN, isbn);  //HP changed
 						BookInfo book;
-						book = MainForm.getMyList().getISBN(isbn);
-						
+						book = MainForm.getMainList().getISBN(isbn);
 						if(book == null){
-							Toast.makeText(context, "Could not find ISBN " + isbn + " in my list!", Toast.LENGTH_SHORT).show();
+							Toast.makeText(context, "Could not find ISBN \"" + isbn + "\" in my list!", Toast.LENGTH_SHORT).show();
 							return;
 						}
 						intent.putExtra(EXTRA_AUTHOR, book.getBookAuthor());//HP changed
@@ -132,10 +116,9 @@ public class MyExpandableAdapter extends BaseExpandableListAdapter implements Qu
 						intent.putExtra(EXTRA_RATING, book.getRating());//HP changed
 						intent.putExtra(EXTRA_STATUS, book.getBookStatus());//HP changed
 						intent.putExtra(EXTRA_COMMENT,  book.getUserComment());//HP added
-						intent.putExtra(EXTRA_SECURITY, book.getBookSecurity()); //HP added
+						intent.putExtra(EXTRA_ISOWNED, book.getBookIsOwned()); //HP added
 						intent.putExtra(EXTRA_ID, book.getBookID()); //HP added
 						intent.putExtra(EXTRA_DATE, book.getDateRead().getTime()); //HP added
-						intent.putExtra("VIEWING", MainForm.getViewing());
 						context.startActivity(intent);
 					}      			
         		});

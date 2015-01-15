@@ -36,8 +36,8 @@
         android:layout_alignBottom="@+id/ISBN"
         android:layout_toRightOf="@+id/ISBN"
         android:ems="10"
-        android:inputType="text"
-        android:focusable="false" />
+        android:inputType="text" />
+    <!-- android:focusable="false" -->
 
     <TextView
         android:id="@+id/Title"
@@ -47,7 +47,7 @@
         android:layout_below="@+id/ISBN"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="16dp"
-        android:text="@string/title_search" />
+        android:text="@string/book_title" />
 
     <EditText
         android:id="@+id/updateTitle"
@@ -56,8 +56,7 @@
         android:layout_alignBottom="@+id/Title"
         android:layout_toRightOf="@+id/Title"
         android:ems="10"
-        android:inputType="text"
-        android:focusable="false" />
+        android:inputType="text"/>
 
     <TextView
         android:id="@+id/Author"
@@ -66,7 +65,7 @@
         android:layout_below="@+id/Title"
         android:layout_marginLeft="17dp"
         android:layout_marginTop="16dp"
-        android:text="@string/author_search" />
+        android:text="@string/book_author" />
 
     <EditText
         android:id="@+id/updateAuthor"
@@ -75,8 +74,7 @@
         android:layout_alignBottom="@+id/Author"
         android:layout_toRightOf="@+id/Author"
         android:ems="10"
-        android:inputType="text"
-        android:focusable="false" />
+        android:inputType="text"/>
 
     <TextView
         android:id="@+id/Status"
@@ -117,12 +115,45 @@
             android:text="@string/reading"
             android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
     </RadioGroup>
+    
+    <TextView
+        android:id="@+id/isOwned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StatusRadioGroup"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/isOwned"
+        android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+    <RadioGroup
+        android:id="@+id/isOwnedRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/isOwned"
+        android:layout_marginLeft="10dp" 
+         android:orientation='horizontal' >
+
+        <RadioButton
+            android:id="@+id/isOwnedYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/yes"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+
+        <RadioButton
+            android:id="@+id/isOwnedNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no"
+            android:textSize="@dimen/abc_action_bar_subtitle_text_size" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/Rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/SecutiryRadioGroup"
+        android:layout_below="@+id/isOwnedRadioGroup"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="16dp"
         android:text="@string/rating" />
@@ -188,7 +219,7 @@
          android:layout_alignBottom="@+id/Date"
          android:layout_toRightOf="@+id/Date"
          android:ems="10"
-         android:hint="@string/date_format"
+         android:hint="@string/yyyymmdd"
          android:inputType="date" >
      </EditText>
 

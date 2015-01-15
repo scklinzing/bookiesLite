@@ -37,9 +37,8 @@ public class EditPersonalBook extends ActionBarActivity implements
 		QueryCallback {
 	// used by caller to identify between multiple queries if 1 handler for all
 	// of them
-	private static final int UPDATE_USER_LIB = 0;
 	private static final int QUERY_BOOK = 1;
-	private static final int UPDATE_BOOK = 2; // deleted - this was for sumOfRatings
+	private static final int UPDATE_BOOK = 2;
 	private static final int DELETE_BOOK = 3;
 
 	// for log identification
@@ -53,11 +52,13 @@ public class EditPersonalBook extends ActionBarActivity implements
 	private String title;
 	private String author;
 	private int status;
-	// private int security;
+	private int nStatus; // updated status
+	private String isOwned = "no"; // by default
+	private String nIsOwned; // new isOwned status
 	private int rating;
 	private int nRating = 0; // new rating based on changes
 	private long dateRead;
-	private String dRead;
+	private String dRead; // updated date read
 	private String comments;
 	private String from;
 	private int userId = -1;
@@ -74,6 +75,9 @@ public class EditPersonalBook extends ActionBarActivity implements
 	private RadioButton radioRead;
 	private RadioButton radioWantToRead;
 	private RadioButton radioReading;
+	/* is owned? */
+	private RadioButton isOwnedYes;
+	private RadioButton isOwnedNo;
 	/* radio 1 - 5 are for ratings */
 	private RadioButton radioOne;
 	private RadioButton radioThree;
@@ -94,6 +98,8 @@ public class EditPersonalBook extends ActionBarActivity implements
 		radioRead = (RadioButton) findViewById(R.id.radioRead);
 		radioWantToRead = (RadioButton) findViewById(R.id.radioWantToRead);
 		radioReading = (RadioButton) findViewById(R.id.radioReading);
+		isOwnedYes = (RadioButton) findViewById(R.id.isOwnedYes);
+		isOwnedNo = (RadioButton) findViewById(R.id.isOwnedNo);
 		radioOne = (RadioButton) findViewById(R.id.radioOne);
 		radioTwo = (RadioButton) findViewById(R.id.radioTwo);
 		radioThree = (RadioButton) findViewById(R.id.radioThree);
@@ -102,15 +108,13 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 		// pull data from passed intent
 		Intent intent = getIntent();
-		from = intent.getStringExtra(AddBookFromAppLib.EXTRA_FROM);
-
-		Log.d(TAG, "from: " + from);
 
 		// user entered variables
 		ISBN = intent.getStringExtra(MyExpandableAdapter.EXTRA_ISBN);
 		author = intent.getStringExtra(MyExpandableAdapter.EXTRA_AUTHOR);
 		title = intent.getStringExtra(MyExpandableAdapter.EXTRA_TITLE);
 		status = intent.getIntExtra(MyExpandableAdapter.EXTRA_STATUS, -1);
+		isOwned = intent.getStringExtra(MyExpandableAdapter.EXTRA_ISOWNED);
 		rating = intent.getIntExtra(MyExpandableAdapter.EXTRA_RATING, -1);
 		dateRead = intent.getLongExtra(MyExpandableAdapter.EXTRA_DATE, -1);
 		comments = intent.getStringExtra(MyExpandableAdapter.EXTRA_COMMENT);
@@ -120,27 +124,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 		updateAuthor.setText(author);
 		updateTitle.setText(title);
 
-		// ---UNCOMMENT when intent is up and working---
-		userId = intent.getIntExtra(MyExpandableAdapter.EXTRA_USERID, -1);
-
-		if (userId == -1) {
-			userId = Variables.getUserId();
-		}
-		viewing = intent.getIntExtra("VIEWING", 0); // defaults to mylist
-		
-		// set comments
-		updateComments.setText(comments);
-
-		// convert date to string and set value
-		Format formatter = new SimpleDateFormat("mm/dd/yyyy");
-		dRead = formatter.format(dateRead);
-
-		// if there is a date, display it
-		if (!dRead.equals("00/31/0002")) {
-			updateDate.setText(dRead);
-		}
-
-		// set status radio buttons
+		// set STATUS radio buttons
 		if (status == 1) {
 			radioRead.setChecked(true);
 			radioWantToRead.setChecked(false);
@@ -154,8 +138,17 @@ public class EditPersonalBook extends ActionBarActivity implements
 			radioWantToRead.setChecked(false);
 			radioReading.setChecked(true);
 		}
-
-		// set rating radio buttons
+		
+		// is OWNED?
+		if (isOwned.equals("no")) {
+			isOwnedNo.setChecked(true);
+			isOwnedYes.setChecked(false);
+		} else {
+			isOwnedNo.setChecked(false);
+			isOwnedYes.setChecked(true);
+		}
+		
+		// set RATING radio buttons
 		if (rating == 1) {
 			radioOne.setChecked(true);
 			radioTwo.setChecked(false);
@@ -187,137 +180,91 @@ public class EditPersonalBook extends ActionBarActivity implements
 			radioFour.setChecked(false);
 			radioFive.setChecked(true);
 		}
+		
+		// convert DATE to string and set value
+		Format formatter = new SimpleDateFormat("mm/dd/yyyy");
+		dRead = formatter.format(dateRead);
+
+		// if there is a date, display it
+		if (!dRead.equals("00/31/0002")) {
+			updateDate.setText(dRead);
+		}
+		
+		// set COMMENTS
+		updateComments.setText(comments);
 	}
 
 	public void updateBook(View view) {
+		Log.d(TAG, "updateBook()");
 		/* create a string to save the set part of the query */
 		String set = "set ";
-		String setBook = "set ";
+		
+		// check if new data matches old data, if not, start setting up
+		if(!ISBN.equals(updateISBN.getText().toString())){
+			set += " ISBN= '" + updateISBN.getText().toString() + "', ";			
+		}
+		if(!author.equals(updateAuthor.getText().toString())){
+			set += " Author= '" + updateAuthor.getText().toString() + "', ";
+		}
+		if(!title.equals(updateTitle.getText().toString())){
+			set += " Title= '" + updateTitle.getText().toString() + "', ";
+		}
 
-		// if this is a newly added book, you do not need to compare
-		// against old data
-		if (from != null && from.equals("1")) {
-			/* --------------------- This is for BOOK --------------------- */
-			if(!ISBN.equals(updateISBN.getText().toString())){
-				setBook += " ISBN= '" + updateISBN.getText().toString() + "', ";			
-			}
-			if(!author.equals(updateAuthor.getText().toString())){
-				setBook += " Author= '" + updateAuthor.getText().toString() + "', ";
-			}
-			if(!title.equals(updateTitle.getText().toString())){
-				setBook += " Title= '" + updateTitle.getText().toString() + "', ";
-			}
-			
-			/* --------------------- This is for USER_LIB  ---------------------*/
-			// date
-			if (dateRead > 0) {
-				set += " dateRead= \"" + updateDate.getText().toString() + "\", ";
-			}
-			// comments
-			if (comments != null) {
-				set += " Comments= \"" + updateComments.getText().toString()
-						+ "\", ";
-				Log.d(TAG, "SET: " + set);
-			}
-			// status
-			int nStatus = 0;
-			if (radioRead.isChecked()) {
-				nStatus = 1;
-				set += " Status= \"" + nStatus + "\", ";
-			} else if (radioWantToRead.isChecked()) {
-				nStatus = 2;
-				set += " Status= \"" + nStatus + "\", ";
-			} else if (radioReading.isChecked()) {
-				nStatus = 3;
-				set += " Status= \"" + nStatus + "\", ";
-			}
-			// rating
-			if (radioOne.isChecked()) {
-				nRating = 1;
-				set += " Rating= \"" + nRating + "\", ";
-			} else if (radioTwo.isChecked()) {
-				nRating = 2;
-				set += " Rating= \"" + nRating + "\", ";
-			} else if (radioThree.isChecked()) {
-				nRating = 3;
-				set += " Rating= \"" + nRating + "\", ";
-			} else if (radioFour.isChecked()) {
-				nRating = 4;
-				set += " Rating= \"" + nRating + "\", ";
-			} else if (radioFive.isChecked()) {
-				nRating = 5;
-				set += " Rating= \"" + nRating + "\", ";
-			}
-			rating = 0;
-		} else {
-			// check if new data matches old data, if not, start setting up
-			/* --------------------- This is for BOOK --------------------- */
-			if(!ISBN.equals(updateISBN.getText().toString())){
-				setBook += " ISBN= '" + updateISBN.getText().toString() + "', ";			
-			}
-			if(!author.equals(updateAuthor.getText().toString())){
-				setBook += " Author= '" + updateAuthor.getText().toString() + "', ";
-			}
-			if(!title.equals(updateTitle.getText().toString())){
-				setBook += " Title= '" + updateTitle.getText().toString() + "', ";
-			}
-
-			/* --------------------- This is for USER_LIB  ---------------------*/
-			// update date read
-			if (!dRead.equals(updateDate.getText().toString())) {
-				set += " dateRead= \"" + updateDate.getText().toString()
-						+ "\", ";
-			}
-			// update comments
-			if (!comments.equals(updateComments.getText().toString())) {
-				set += " Comments= \"" + updateComments.getText().toString()
-						+ "\", ";
-			}
-			// check status radios and update if needed
-			int nStatus = 0;
-			if (radioRead.isChecked()) {
-				nStatus = 1;
-			} else if (radioWantToRead.isChecked()) {
-				nStatus = 2;
-			} else if (radioReading.isChecked()) {
-				nStatus = 3;
-			}
-			if (!(status == nStatus)) {
-				set += " Status= \"" + nStatus + "\", ";
-			}
-			// check rating radios and update if needed
-			if (radioOne.isChecked()) {
-				nRating = 1;
-			} else if (radioTwo.isChecked()) {
-				nRating = 2;
-			} else if (radioThree.isChecked()) {
-				nRating = 3;
-			} else if (radioFour.isChecked()) {
-				nRating = 4;
-			} else if (radioFive.isChecked()) {
-				nRating = 5;
-			}
-			// if rating has changed
-			if (!(rating == nRating)) {
-				set += " Rating= \"" + nRating + "\", ";
-			}
+		// update date read
+		if (!dRead.equals(updateDate.getText().toString())) {
+			set += " dateRead= \"" + updateDate.getText().toString()
+					+ "\", ";
+		}
+		// update comments
+		if (!comments.equals(updateComments.getText().toString())) {
+			set += " Comments= \"" + updateComments.getText().toString()
+					+ "\", ";
+		}
+		// check status radios and update if needed
+		nStatus = 0;
+		if (radioRead.isChecked()) {
+			nStatus = 1;
+		} else if (radioWantToRead.isChecked()) {
+			nStatus = 2;
+		} else if (radioReading.isChecked()) {
+			nStatus = 3;
+		}
+		if (!(status == nStatus)) {
+			set += " Status= \"" + nStatus + "\", ";
+		}
+		
+		// check isOwned radios and update if needed
+		nIsOwned = "no";
+		if (isOwnedYes.isChecked())
+			nIsOwned = "yes";
+		if (!(isOwned.equals(nIsOwned))) {
+			set += " isOwned= \"" + nIsOwned + "\", ";
+		}
+		
+		// check rating radios and update if needed
+		if (radioOne.isChecked()) {
+			nRating = 1;
+		} else if (radioTwo.isChecked()) {
+			nRating = 2;
+		} else if (radioThree.isChecked()) {
+			nRating = 3;
+		} else if (radioFour.isChecked()) {
+			nRating = 4;
+		} else if (radioFive.isChecked()) {
+			nRating = 5;
+		}
+		// if rating has changed
+		if (!(rating == nRating)) {
+			set += " Rating= \"" + nRating + "\", ";
 		}
 
 		/* chop the last comma & space off of set */
 		set = set.substring(0, set.length() - 2);
-		setBook = setBook.substring(0, setBook.length() - 2);
-
-		/* update USER_LIB in the database */
-		query = "update USER_LIB " + set + " where ISBN= \"" + ISBN
-				+ "\" and userID= \"" + userId + "\"";
-		Log.d(TAG, "Query= " + query); // logging for debugging
-		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(),
-				Variables.getSalt(), query, UPDATE_USER_LIB, this,
-				Variables.getRest(), null).execute();
 		
 		/* update BOOK in database */
-		query = "update BOOK " + setBook + " where ISBN= \"" + ISBN + "\"";
+		query = "update BOOK " + set + " where ISBN= \"" + ISBN + "\"";
 		Log.d(TAG, "Query: " + query); // logging for debugging
+		Log.d(TAG, "set: " + set); // logging for debugging
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(),
 				Variables.getSalt(), query, UPDATE_BOOK, this,
 				Variables.getRest(), null).execute();
@@ -346,9 +293,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 	// delete the book once confirmed
 	public void deleteBook(View view) {
-		query = "delete from USER_LIB where ISBN= \"" + ISBN
-				+ "\" and userID= \"" + userId + "\"";
-
+		query = "delete from BOOK where ISBN= \"" + ISBN + "\"";
 		new QueryTask(Variables.getWS_URL(), Variables.getSessionId(),
 				Variables.getSalt(), query, DELETE_BOOK, this,
 				Variables.getRest(), null).execute();
@@ -356,9 +301,8 @@ public class EditPersonalBook extends ActionBarActivity implements
 
 	@Override
 	public void onQueryTaskCompleted(int code, JSONObject result) {
-		// TODO Auto-generated method stub
 		try {
-			if (code == UPDATE_USER_LIB) {
+			if (code == UPDATE_BOOK) {	
 				if (result != null
 						&& !result.isNull("response_status")
 						&& result.getString("response_status")
@@ -376,16 +320,12 @@ public class EditPersonalBook extends ActionBarActivity implements
 					// 1 = mainlist, 2 = friends list
 					if (from != null && from.equals("1")) {
 						Toast.makeText(getApplicationContext(),
-								"Book Added to Personal Library",
+								"Book Updated",
 								Toast.LENGTH_LONG).show();
 
 						Intent intent = new Intent(this, MainForm.class);
 
 						intent.putExtra("VIEWING", viewing);
-
-						if (viewing == 2) {
-							intent.putExtra("FRIEND_ID", userId);
-						}
 
 						intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -439,8 +379,7 @@ public class EditPersonalBook extends ActionBarActivity implements
 							"Unable to delete book", Toast.LENGTH_LONG).show();
 					Log.e(TAG, "*** Error: " + result);
 				}
-			} else if (code == QUERY_BOOK) {
-
+			/*} else if (code == QUERY_BOOK) {
 				if (result != null
 						&& !result.isNull("response_status")
 						&& result.getString("response_status")
@@ -456,9 +395,9 @@ public class EditPersonalBook extends ActionBarActivity implements
 					}
 					// log rows
 					Log.d(TAG, "Rows= " + row);
-				}
+				}*/
 			} else {
-				Log.e(TAG, "*** Error: unknown code");
+				Log.e(TAG, "*** Error: Unknown code");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

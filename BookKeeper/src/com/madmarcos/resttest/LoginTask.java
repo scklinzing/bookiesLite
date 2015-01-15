@@ -6,10 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.bookies.bookkeeper.Login;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +20,6 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
 	private String login = "";
 	private String password = "";
 	private RestFetcher rest = null;
-	private Context context;
 	ProgressBar bar = null;
 	
 	public LoginTask(String ws, String l, String pw, LoginCallback cb, RestFetcher r, View v) {
@@ -67,5 +62,4 @@ public class LoginTask extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }	        
     }
-	
 }
